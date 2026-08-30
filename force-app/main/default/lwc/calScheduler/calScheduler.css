@@ -1,0 +1,86 @@
+:host {
+    --cal-axis-width: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    border: 1px solid #dddbda;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    background: white;
+}
+
+.scheduler {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+.scheduler__header,
+.scheduler__allday {
+    display: flex;
+    border-bottom: 1px solid #dddbda;
+}
+
+.scheduler__gutter {
+    flex: 0 0 var(--cal-axis-width);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 0.5rem;
+    font-size: 0.6875rem;
+    color: #706e6b;
+}
+
+.scheduler__headings {
+    flex: 1;
+    display: grid;
+    min-width: 0;
+}
+
+.scheduler__heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-left: 1px solid #e5e5e5;
+    font-size: 0.75rem;
+}
+
+.scheduler__weekday {
+    text-transform: uppercase;
+    color: #706e6b;
+    font-weight: 700;
+    font-size: 0.6875rem;
+}
+
+.scheduler__daynum {
+    font-weight: 600;
+    color: #16325c;
+}
+
+.scheduler__heading_today .scheduler__daynum {
+    background: #1b96ff;
+    color: white;
+    border-radius: 50%;
+    padding: 0.0625rem 0.375rem;
+}
+
+.scheduler__scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.scheduler__grid {
+    display: flex;
+    align-items: stretch;
+}
+
+.scheduler__columns {
+    flex: 1;
+    display: grid;
+    min-width: 0;
+}

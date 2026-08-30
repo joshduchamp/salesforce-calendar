@@ -1,0 +1,16 @@
+<template>
+    <div class="band" style={rowStyle}>
+        <template for:each={bars} for:item="bar">
+            <div key={bar.key} class={bar.className} style={bar.style}>
+                <c-cal-event-chip
+                    event={bar.event}
+                    field-config={fieldConfig}
+                    view="scheduler"
+                    hide-time
+                    dense
+                    locale={locale}
+                ></c-cal-event-chip>
+            </div>
+        </template>
+    </div>
+</template>

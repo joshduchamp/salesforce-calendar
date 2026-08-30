@@ -1,0 +1,25 @@
+:host {
+    display: block;
+    flex: 0 0 var(--cal-axis-width, 3.5rem);
+    background: white;
+}
+
+.axis__hour {
+    position: relative;
+    height: var(--cal-hour-height, 48px);
+    border-top: 1px solid transparent;
+}
+
+.axis__label {
+    position: absolute;
+    top: -0.5rem;
+    right: 0.5rem;
+    font-size: 0.6875rem;
+    color: #706e6b;
+    background: white;
+    padding: 0 0.125rem;
+}
+
+.axis__hour:first-child .axis__label {
+    top: 0.125rem;
+}

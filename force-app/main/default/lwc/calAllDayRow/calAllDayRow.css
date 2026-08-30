@@ -1,0 +1,24 @@
+:host {
+    display: block;
+    flex: 1;
+    min-width: 0;
+}
+
+.band {
+    display: grid;
+    gap: 2px;
+    padding: 2px 0;
+    min-height: 1.25rem;
+}
+
+.band__bar {
+    min-width: 0;
+}
+
+.band__bar_open-start c-cal-event-chip {
+    --cal-chip-radius-start: 0;
+}
+
+.band__bar_open-end c-cal-event-chip {
+    --cal-chip-radius-end: 0;
+}

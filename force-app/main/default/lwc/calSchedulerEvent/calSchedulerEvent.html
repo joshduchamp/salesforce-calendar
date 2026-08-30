@@ -1,0 +1,15 @@
+<template>
+    <div
+        class={eventClass}
+        style={style}
+        role="button"
+        tabindex="0"
+        title={event.title}
+        onclick={handleClick}
+        ondblclick={handleDblClick}
+        onkeydown={handleKeydown}
+    >
+        <span class="event__title">{event.title}</span>
+        <span class="event__time">{timeLabel}</span>
+    </div>
+</template>

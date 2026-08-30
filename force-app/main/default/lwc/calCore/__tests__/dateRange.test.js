@@ -6,7 +6,9 @@ import {
     step,
     weekdayNames,
     rangeTitle,
-    isSameDay
+    isSameDay,
+    hoursInWindow,
+    formatHour
 } from 'c/calCore';
 
 describe('startOfWeek', () => {
@@ -106,6 +108,25 @@ describe('rangeTitle', () => {
         expect(rangeTitle('week', new Date(2026, 7, 29), { locale: 'en-US', firstDayOfWeek: 0 })).toBe(
             'Aug 23 – 29, 2026'
         );
+    });
+});
+
+describe('hoursInWindow', () => {
+    it('lists every whole hour in [start, end)', () => {
+        expect(hoursInWindow(0, 24)).toHaveLength(24);
+        expect(hoursInWindow(8, 12)).toEqual([8, 9, 10, 11]);
+    });
+
+    it('clamps to the day and drops an inverted window', () => {
+        expect(hoursInWindow(-3, 26)).toHaveLength(24);
+        expect(hoursInWindow(12, 8)).toEqual([]);
+    });
+});
+
+describe('formatHour', () => {
+    it('labels a whole hour', () => {
+        expect(formatHour(9, { locale: 'en-US' })).toBe('9 AM');
+        expect(formatHour(0, { locale: 'en-US' })).toBe('12 AM');
     });
 });
 

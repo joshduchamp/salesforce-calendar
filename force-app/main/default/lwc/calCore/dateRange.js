@@ -163,6 +163,23 @@ export function rangeTitle(view, date, { locale, firstDayOfWeek = 0 } = {}) {
     return new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(d);
 }
 
+/** The whole hours in a scheduler window, `[startHour, endHour)`. */
+export function hoursInWindow(startHour = 0, endHour = 24) {
+    const from = Math.max(0, Math.floor(startHour));
+    const to = Math.min(24, Math.ceil(endHour));
+    const hours = [];
+    for (let h = from; h < to; h += 1) {
+        hours.push(h);
+    }
+    return hours;
+}
+
+/** Label for a whole-hour tick on the scheduler time axis. */
+export function formatHour(hour, { locale } = {}) {
+    const d = new Date(2023, 0, 1, hour, 0, 0, 0);
+    return new Intl.DateTimeFormat(locale, { hour: 'numeric' }).format(d);
+}
+
 export function formatTime(date, { locale, hour12 } = {}) {
     return new Intl.DateTimeFormat(locale, {
         hour: 'numeric',

@@ -78,11 +78,18 @@ matching rule → per-calendar `color` → `defaultColor` → built-in default.
 | `calMonthView` | month grid: weekday header + rows of cells |
 | `calMonthCell` | one day cell: date number, as many chips as fit, always-visible "+N more" |
 | `calDayEventsPopover` | floating panel listing a day's full event list; opened by hovering/focusing "+N more" |
-| `calEventChip` | compact event pill (month + condensed) |
+| `calEventChip` | compact event pill (month + condensed + all-day bars) |
+| `calWeekView` | resolves the week's 7 (or 5) days and picks a layout |
+| `calDayView` | same for a single day |
+| `calScheduler` | scheduler layout: day-header row, all-day band, scrollable time grid; owns the hour geometry (`--cal-hour-height`) and auto-scrolls to 8am |
+| `calTimeAxis` | the left-hand hour ruler |
+| `calSchedulerColumn` | one day's column; runs `packColumns` and positions each event box from its time + overlap slot |
+| `calSchedulerEvent` | one positioned timed-event block |
+| `calAllDayRow` | the all-day / multi-day band; lane-packs bars with `packLanes` |
 | `calCore` | pure logic module (date math, layout packing, color/field resolution, event model) |
 
-Week/day views (`calWeekView`, `calDayView`, `calScheduler`, `calAgenda`, …) are
-planned — see the plan file.
+The condensed (agenda) layout — `calAgenda`, `calAgendaDay`, `calAgendaItem` —
+and month-grid spanning bars are still planned; see the plan file.
 
 ## Demo
 

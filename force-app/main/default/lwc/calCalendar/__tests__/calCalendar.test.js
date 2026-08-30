@@ -78,7 +78,7 @@ describe('c-cal-calendar', () => {
 
         expect(viewchange.mock.calls[0][0].detail).toEqual({ view: 'week' });
         expect(range).toHaveBeenCalled();
-        expect(element.shadowRoot.querySelector('.calendar__placeholder')).not.toBeNull();
+        expect(element.shadowRoot.querySelector('c-cal-week-view')).not.toBeNull();
     });
 
     it('filters events for hidden calendars', async () => {

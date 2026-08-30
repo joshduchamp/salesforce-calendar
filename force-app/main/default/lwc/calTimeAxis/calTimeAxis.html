@@ -1,0 +1,9 @@
+<template>
+    <div class="axis">
+        <template for:each={hours} for:item="slot">
+            <div key={slot.hour} class="axis__hour">
+                <span class="axis__label">{slot.label}</span>
+            </div>
+        </template>
+    </div>
+</template>

@@ -33,15 +33,6 @@
     overflow: auto;
 }
 
-.calendar__placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: #706e6b;
-    font-style: italic;
-}
-
 @media (max-width: 48em) {
     .calendar__body {
         flex-direction: column;

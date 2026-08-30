@@ -1,0 +1,15 @@
+<template>
+    <template if:true={isCondensed}>
+        <div class="view__placeholder">The condensed day view is coming soon.</div>
+    </template>
+    <template if:false={isCondensed}>
+        <c-cal-scheduler
+            days={days}
+            events={events}
+            start-hour={schedulerStartHour}
+            end-hour={schedulerEndHour}
+            field-config={fieldConfig}
+            locale={locale}
+        ></c-cal-scheduler>
+    </template>
+</template>

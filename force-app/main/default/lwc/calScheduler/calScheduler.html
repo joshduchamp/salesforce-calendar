@@ -1,0 +1,48 @@
+<template>
+    <div class="scheduler">
+        <div class="scheduler__header">
+            <div class="scheduler__gutter"></div>
+            <div class="scheduler__headings" style={columnsStyle}>
+                <template for:each={dayColumns} for:item="col">
+                    <div key={col.key} class={col.headingClass}>
+                        <span class="scheduler__weekday">{col.weekdayLabel}</span>
+                        <span class="scheduler__daynum">{col.dayNumber}</span>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <div class="scheduler__allday">
+            <div class="scheduler__gutter scheduler__gutter_allday">All day</div>
+            <c-cal-all-day-row
+                days={days}
+                events={allDayEvents}
+                field-config={fieldConfig}
+                locale={locale}
+            ></c-cal-all-day-row>
+        </div>
+
+        <div class="scheduler__scroll" lwc:ref="scroll">
+            <div class="scheduler__grid" style={gridStyle}>
+                <c-cal-time-axis
+                    class="scheduler__axis"
+                    start-hour={numericStartHour}
+                    end-hour={numericEndHour}
+                    locale={locale}
+                ></c-cal-time-axis>
+                <div class="scheduler__columns" style={columnsStyle}>
+                    <template for:each={dayColumns} for:item="col">
+                        <c-cal-scheduler-column
+                            key={col.key}
+                            day={col.day}
+                            events={col.events}
+                            start-hour={numericStartHour}
+                            end-hour={numericEndHour}
+                            locale={locale}
+                        ></c-cal-scheduler-column>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

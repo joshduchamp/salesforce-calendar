@@ -1,0 +1,66 @@
+:host {
+    display: block;
+    height: 100%;
+}
+
+.event {
+    --cal-event-color: #1b96ff;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0.125rem 0.25rem;
+    border-left: 3px solid var(--cal-event-color);
+    border-radius: 0.25rem;
+    background: color-mix(in srgb, var(--cal-event-color) 16%, white);
+    color: #16325c;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.event:hover {
+    background: color-mix(in srgb, var(--cal-event-color) 26%, white);
+}
+
+.event:focus {
+    outline: 2px solid var(--cal-event-color);
+    outline-offset: -1px;
+}
+
+.event__title {
+    display: block;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.event__time {
+    display: block;
+    opacity: 0.75;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Short events (< 45 min) can't fit two lines: title and time share one row. */
+.event_short {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.25rem;
+    padding-top: 0.0625rem;
+    padding-bottom: 0.0625rem;
+    line-height: 1.15;
+}
+
+.event_short .event__title {
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.event_short .event__time {
+    flex: 0 0 auto;
+    font-size: 0.6875rem;
+}

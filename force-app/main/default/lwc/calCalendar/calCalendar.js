@@ -173,12 +173,12 @@ export default class CalCalendar extends NavigationMixin(LightningElement) {
         return this._view === 'month';
     }
 
-    get isPendingView() {
-        return this._view === 'week' || this._view === 'day';
+    get isWeek() {
+        return this._view === 'week';
     }
 
-    get pendingViewMessage() {
-        return `The ${this._view} view is coming soon.`;
+    get isDay() {
+        return this._view === 'day';
     }
 
     get showSidebar() {

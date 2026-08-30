@@ -1,0 +1,12 @@
+<template>
+    <div class="column">
+        <template for:each={placedEvents} for:item="item">
+            <div key={item.key} class="column__slot" style={item.style}>
+                <c-cal-scheduler-event
+                    event={item.event}
+                    locale={locale}
+                ></c-cal-scheduler-event>
+            </div>
+        </template>
+    </div>
+</template>

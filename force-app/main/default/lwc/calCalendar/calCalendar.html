@@ -40,8 +40,30 @@
                     ></c-cal-month-view>
                 </template>
 
-                <template if:true={isPendingView}>
-                    <div class="calendar__placeholder">{pendingViewMessage}</div>
+                <template if:true={isWeek}>
+                    <c-cal-week-view
+                        events={preparedEvents}
+                        date={date}
+                        layout={layout}
+                        first-day-of-week={firstDayOfWeek}
+                        hide-weekends={hideWeekends}
+                        field-config={fieldConfig}
+                        scheduler-start-hour={schedulerStartHour}
+                        scheduler-end-hour={schedulerEndHour}
+                        locale={locale}
+                    ></c-cal-week-view>
+                </template>
+
+                <template if:true={isDay}>
+                    <c-cal-day-view
+                        events={preparedEvents}
+                        date={date}
+                        layout={layout}
+                        field-config={fieldConfig}
+                        scheduler-start-hour={schedulerStartHour}
+                        scheduler-end-hour={schedulerEndHour}
+                        locale={locale}
+                    ></c-cal-day-view>
                 </template>
             </div>
         </div>

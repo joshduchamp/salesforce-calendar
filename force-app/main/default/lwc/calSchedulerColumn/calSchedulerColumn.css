@@ -1,0 +1,25 @@
+:host {
+    display: block;
+    position: relative;
+    min-width: 0;
+    border-left: 1px solid #e5e5e5;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        #e5e5e5 0,
+        #e5e5e5 1px,
+        transparent 1px,
+        transparent var(--cal-hour-height, 48px)
+    );
+}
+
+.column {
+    position: absolute;
+    inset: 0;
+}
+
+.column__slot {
+    position: absolute;
+    box-sizing: border-box;
+    padding-right: 2px;
+    min-height: 0.9rem;
+}

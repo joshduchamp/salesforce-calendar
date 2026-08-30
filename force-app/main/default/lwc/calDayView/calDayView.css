@@ -1,0 +1,13 @@
+:host {
+    display: block;
+    height: 100%;
+}
+
+.view__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #706e6b;
+    font-style: italic;
+}
