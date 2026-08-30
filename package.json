@@ -1,8 +1,24 @@
 {
-  "name": "calendar",
+  "name": "salesforce-calendar",
   "private": true,
   "version": "1.0.0",
   "description": "Reusable, SObject-agnostic calendar Lightning Web Component",
+  "license": "MIT",
+  "author": "Joshua Duchamp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshduchamp/salesforce-calendar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joshduchamp/salesforce-calendar/issues"
+  },
+  "homepage": "https://github.com/joshduchamp/salesforce-calendar#readme",
+  "keywords": [
+    "salesforce",
+    "lwc",
+    "lightning-web-components",
+    "calendar"
+  ],
   "scripts": {
     "test": "npm run test:unit",
     "test:unit": "sfdx-lwc-jest",

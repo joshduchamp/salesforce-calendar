@@ -1,18 +1,78 @@
-# Salesforce DX Project: Next Steps
+# Salesforce Calendar LWC
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+A reusable, **SObject-agnostic** calendar built from small, single-purpose
+Lightning Web Components. The calendar knows nothing about `Event`, `Contact`, or
+any custom object — the host passes in a generic event shape and reacts to the
+intent events the calendar emits.
 
-## How Do You Plan to Deploy Your Changes?
+> Status: month view is complete. Week and day views (condensed + scheduler
+> layouts) are in progress — see [docs/requirements.md](docs/requirements.md).
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+## Highlights
 
-## Configure Your Salesforce DX Project
+- **Month view** with equal-height weeks, per-day event chips, and an
+  always-visible "+N more" that opens a hover popover of the full day.
+- **Multiple calendars** with per-calendar show/hide toggles.
+- **Calendar-wide color coding** — ordered rules match a field on every event
+  (`status` equals `Scheduled` → blue), falling back to a per-calendar color.
+- **Configurable event fields** — the host picks which fields render on a chip,
+  per view.
+- **Double-click to open** the related record (`NavigationMixin`, no object API
+  name required).
+- Pure date / layout / color logic lives in the `c/calCore` module and is
+  unit-tested directly (90+ Jest tests).
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+## Quick start
 
-## Read All About It
+```bash
+npm install
+npm test          # Jest unit tests
+npm run lint
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+sf org create scratch -f config/project-scratch-def.json -a calendar-dev
+sf project deploy start -d force-app
+sf org assign permset -n Calendar_Access
+sf org open -p /lightning/n/Calendar_Demo
+```
+
+The **Calendar Demo** tab hosts `c-cal-demo` — sample data wired into
+`c-cal-calendar` with no Apex.
+
+## Using the component
+
+```html
+<c-cal-calendar
+    events={events}
+    calendars={calendars}
+    view="month"
+    field-config={fieldConfig}
+    color-rules={colorRules}
+    first-day-of-week="1"
+    onrangechange={handleRangeChange}
+    oneventclick={handleEventClick}
+    oneventopen={handleEventOpen}
+    oncalendarvisibilitychange={handleVisibilityChange}
+></c-cal-calendar>
+```
+
+Event shape (all host-supplied):
+
+```js
+{ id, calendarId, title, start, end, allDay, recordId?, meta? }
+```
+
+`start` / `end` are ISO strings; `meta` is an opaque bag that `field-config` and
+`color-rules` read by key. A host adapter maps its records into this shape — the
+calendar stays object-agnostic.
+
+Full attribute / event reference: [docs/components.md](docs/components.md).
+
+## Architecture
+
+See [CLAUDE.md](CLAUDE.md). In short: small components (each does one thing), thin
+`@AuraEnabled` controllers when Apex is added, and the calendar composed rather
+than built as one monolith.
+
+## License
+
+[MIT](LICENSE) © 2026 Joshua Duchamp
