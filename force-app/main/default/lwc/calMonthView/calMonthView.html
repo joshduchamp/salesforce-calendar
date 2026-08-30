@@ -1,0 +1,28 @@
+<template>
+    <div class="month" style={gridStyle}>
+        <div class="month__header">
+            <template for:each={headerDays} for:item="header">
+                <div key={header.key} class="month__weekday">{header.label}</div>
+            </template>
+        </div>
+        <div class="month__body">
+            <template for:each={weeks} for:item="week">
+                <div key={week.key} class="month__row">
+                    <template for:each={week.days} for:item="cell">
+                        <c-cal-month-cell
+                            key={cell.key}
+                            class="month__cell"
+                            day={cell.day}
+                            events={cell.events}
+                            field-config={fieldConfig}
+                            max-visible={maxEventsPerDay}
+                            outside={cell.outside}
+                            is-today={cell.isToday}
+                            locale={locale}
+                        ></c-cal-month-cell>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

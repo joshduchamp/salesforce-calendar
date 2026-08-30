@@ -1,0 +1,49 @@
+<template>
+    <div class="calendar">
+        <c-cal-toolbar
+            title={title}
+            view={view}
+            layout={layout}
+            can-toggle-layout={canToggleLayout}
+            ontoday={handleToday}
+            onnavigate={handleNavigate}
+            onviewchange={handleViewChange}
+            onlayoutchange={handleLayoutChange}
+        ></c-cal-toolbar>
+
+        <div class={bodyClass}>
+            <template if:true={showSidebar}>
+                <aside class="calendar__sidebar">
+                    <c-cal-source-list
+                        calendars={sourceCalendars}
+                        oncalendarvisibilitychange={handleVisibilityChange}
+                    ></c-cal-source-list>
+                </aside>
+            </template>
+
+            <div
+                class="calendar__view"
+                oneventselect={handleEventSelect}
+                oneventopen={handleEventOpen}
+                onshowday={handleDrillToDay}
+                ondayclick={handleDrillToDay}
+            >
+                <template if:true={isMonth}>
+                    <c-cal-month-view
+                        events={preparedEvents}
+                        date={date}
+                        first-day-of-week={firstDayOfWeek}
+                        hide-weekends={hideWeekends}
+                        field-config={fieldConfig}
+                        max-events-per-day={maxEventsPerDay}
+                        locale={locale}
+                    ></c-cal-month-view>
+                </template>
+
+                <template if:true={isPendingView}>
+                    <div class="calendar__placeholder">{pendingViewMessage}</div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

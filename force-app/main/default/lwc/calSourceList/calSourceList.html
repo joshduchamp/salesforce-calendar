@@ -1,0 +1,24 @@
+<template>
+    <template if:true={hasCalendars}>
+        <div class="sources">
+            <p class="sources__heading slds-text-title_caps">{heading}</p>
+            <ul class="sources__list">
+                <template for:each={items} for:item="item">
+                    <li key={item.id} class="sources__item" style={item.style}>
+                        <label class="sources__label">
+                            <input
+                                type="checkbox"
+                                class="sources__checkbox"
+                                data-id={item.id}
+                                checked={item.visible}
+                                onchange={handleToggle}
+                            />
+                            <span class="sources__swatch"></span>
+                            <span class="sources__text">{item.label}</span>
+                        </label>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,34 @@
+<template>
+    <div
+        class={chipClass}
+        style={style}
+        role="button"
+        tabindex="0"
+        title={event.title}
+        onclick={handleClick}
+        ondblclick={handleDblClick}
+        onkeydown={handleKeydown}
+    >
+        <span class="chip__bar"></span>
+        <span class="chip__body">
+            <span class="chip__title">
+                <template if:true={showTime}>
+                    <span class="chip__time">{timeLabel}</span>
+                </template>
+                {event.title}
+            </span>
+            <template if:true={hasFields}>
+                <span class="chip__fields">
+                    <template for:each={fields} for:item="field">
+                        <span key={field.key} class="chip__field">
+                            <template if:true={field.showLabel}>
+                                <span class="chip__field-label">{field.label}:</span>
+                            </template>
+                            {field.value}
+                        </span>
+                    </template>
+                </span>
+            </template>
+        </span>
+    </div>
+</template>

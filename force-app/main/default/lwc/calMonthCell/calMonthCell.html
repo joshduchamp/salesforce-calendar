@@ -1,0 +1,58 @@
+<template>
+    <div class={cellClass}>
+        <div class="cell__header">
+            <button
+                class="cell__date"
+                type="button"
+                title={dateLabel}
+                onclick={handleDayClick}
+            >
+                <template if:true={isFirstOfMonth}>
+                    <span class="cell__month">{monthLabel}</span>
+                </template>
+                {dayNumber}
+            </button>
+        </div>
+
+        <div class="cell__events" lwc:ref="list">
+            <template for:each={visibleEvents} for:item="event">
+                <c-cal-event-chip
+                    key={event.id}
+                    event={event}
+                    field-config={fieldConfig}
+                    view="month"
+                    dense
+                    locale={locale}
+                ></c-cal-event-chip>
+            </template>
+        </div>
+
+        <template if:true={hasOverflow}>
+            <button
+                class="cell__more"
+                type="button"
+                lwc:ref="more"
+                onclick={handleMoreClick}
+                onmouseenter={handleMoreEnter}
+                onmouseleave={handleMoreLeave}
+                onfocus={handleMoreEnter}
+                onblur={handleMoreLeave}
+            >
+                {moreLabel}
+            </button>
+        </template>
+
+        <template if:true={popoverOpen}>
+            <c-cal-day-events-popover
+                day={day}
+                events={events}
+                field-config={fieldConfig}
+                locale={locale}
+                anchor={anchor}
+                onclose={handlePopoverClose}
+                onpointerin={handlePopoverPointerIn}
+                onpointerout={handlePopoverPointerOut}
+            ></c-cal-day-events-popover>
+        </template>
+    </div>
+</template>

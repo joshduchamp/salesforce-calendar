@@ -1,0 +1,38 @@
+:host {
+    display: block;
+}
+
+.sources__heading {
+    margin-bottom: 0.5rem;
+    color: #706e6b;
+}
+
+.sources__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sources__label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.8125rem;
+}
+
+.sources__swatch {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 0.1875rem;
+    background: var(--cal-source-color, #1b96ff);
+    flex: 0 0 auto;
+}
+
+.sources__checkbox:not(:checked) ~ .sources__swatch {
+    opacity: 0.3;
+}
+
+.sources__checkbox:not(:checked) ~ .sources__text {
+    color: #a8a8a8;
+}

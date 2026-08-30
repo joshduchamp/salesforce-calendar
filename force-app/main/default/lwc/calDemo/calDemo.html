@@ -1,0 +1,16 @@
+<template>
+    <div class="demo">
+        <c-cal-calendar
+            events={events}
+            calendars={calendars}
+            view="month"
+            field-config={fieldConfig}
+            color-rules={colorRules}
+            first-day-of-week="1"
+            onrangechange={handleRangeChange}
+            oneventclick={handleEventClick}
+            oneventopen={handleEventOpen}
+            oncalendarvisibilitychange={handleVisibilityChange}
+        ></c-cal-calendar>
+    </div>
+</template>

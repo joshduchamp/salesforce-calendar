@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Calendar Access</label>
+    <description>Grants access to the Calendar demo app and tab.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <applicationVisibilities>
+        <application>Calendar</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <tabSettings>
+        <tab>Calendar_Demo</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

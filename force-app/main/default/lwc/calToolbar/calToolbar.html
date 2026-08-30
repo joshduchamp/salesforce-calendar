@@ -1,0 +1,58 @@
+<template>
+    <div class="toolbar">
+        <div class="toolbar__group">
+            <lightning-button
+                data-action="today"
+                label="Today"
+                onclick={handleToday}
+                variant="neutral"
+            ></lightning-button>
+
+            <div class="toolbar__nav">
+                <lightning-button-icon
+                    data-action="prev"
+                    icon-name="utility:chevronleft"
+                    alternative-text="Previous"
+                    title="Previous"
+                    variant="border-filled"
+                    onclick={handlePrev}
+                ></lightning-button-icon>
+                <h1 class="toolbar__title">{title}</h1>
+                <lightning-button-icon
+                    data-action="next"
+                    icon-name="utility:chevronright"
+                    alternative-text="Next"
+                    title="Next"
+                    variant="border-filled"
+                    onclick={handleNext}
+                ></lightning-button-icon>
+            </div>
+        </div>
+
+        <div class="toolbar__spacer"></div>
+
+        <div class="toolbar__group">
+            <template if:true={canToggleLayout}>
+                <lightning-button
+                    data-action="layout"
+                    label={layoutButtonLabel}
+                    icon-name={layoutButtonIcon}
+                    onclick={handleLayoutToggle}
+                    variant="neutral"
+                ></lightning-button>
+            </template>
+
+            <lightning-button-group>
+                <template for:each={views} for:item="option">
+                    <lightning-button
+                        key={option.value}
+                        label={option.label}
+                        data-view={option.value}
+                        variant={option.variant}
+                        onclick={handleViewClick}
+                    ></lightning-button>
+                </template>
+            </lightning-button-group>
+        </div>
+    </div>
+</template>

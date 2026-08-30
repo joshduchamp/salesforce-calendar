@@ -1,0 +1,90 @@
+:host {
+    display: block;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.cell {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    padding: 0.25rem;
+    background: white;
+    gap: 0.25rem;
+    overflow: hidden;
+}
+
+.cell--outside {
+    background: #fafaf9;
+    color: #a8a8a8;
+}
+
+.cell__header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cell__date {
+    border: none;
+    background: transparent;
+    font: inherit;
+    font-size: 0.8125rem;
+    color: inherit;
+    cursor: pointer;
+    padding: 0.0625rem 0.375rem;
+    border-radius: 999px;
+    line-height: 1.4;
+}
+
+.cell__date:hover {
+    background: #f3f3f3;
+}
+
+.cell--today .cell__date {
+    background: #1b96ff;
+    color: white;
+    font-weight: 700;
+}
+
+.cell__month {
+    margin-right: 0.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+}
+
+.cell__events {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+}
+
+.cell__events > c-cal-event-chip {
+    flex: 0 0 auto;
+}
+
+.cell__more {
+    border: none;
+    background: transparent;
+    font: inherit;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #514f4d;
+    cursor: pointer;
+    text-align: left;
+    padding: 0.0625rem 0.375rem;
+    border-radius: 0.25rem;
+    flex: 0 0 auto;
+}
+
+.cell__more:hover,
+.cell__more:focus-visible {
+    background: #f3f2f2;
+    color: #16325c;
+    outline: none;
+}

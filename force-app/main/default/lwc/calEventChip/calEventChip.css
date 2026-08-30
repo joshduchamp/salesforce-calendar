@@ -1,0 +1,75 @@
+:host {
+    display: block;
+}
+
+.chip {
+    --cal-chip-color: #1b96ff;
+    display: flex;
+    align-items: stretch;
+    gap: 0.25rem;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    background: color-mix(in srgb, var(--cal-chip-color) 14%, white);
+    color: #16325c;
+    font-size: 0.75rem;
+    line-height: 1.25;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.chip:hover {
+    background: color-mix(in srgb, var(--cal-chip-color) 24%, white);
+}
+
+.chip:focus {
+    outline: 2px solid var(--cal-chip-color);
+    outline-offset: 1px;
+}
+
+.chip_dense {
+    padding: 0.0625rem 0.25rem;
+}
+
+.chip_dense .chip__title {
+    font-weight: 500;
+}
+
+.chip__bar {
+    flex: 0 0 3px;
+    border-radius: 1px;
+    background: var(--cal-chip-color);
+}
+
+.chip__body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.chip__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+}
+
+.chip__time {
+    font-weight: 400;
+    opacity: 0.75;
+    margin-right: 0.25rem;
+}
+
+.chip__fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    opacity: 0.8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chip__field-label {
+    font-weight: 600;
+    margin-right: 0.125rem;
+}
