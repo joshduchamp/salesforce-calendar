@@ -1,0 +1,8 @@
+# Lightning bundle files are stored by the platform without a trailing newline;
+# Prettier always adds one, which makes `sf` source tracking see a permanent diff.
+# LWC is not formatted with Prettier in this project (ESLint covers it).
+force-app/main/default/lwc/
+
+# Generated / vendored
+.sf/
+.sfdx/

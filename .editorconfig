@@ -1,0 +1,21 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{json,yml,yaml,md}]
+indent_size = 2
+
+# Salesforce stores Lightning bundle files without a trailing newline. Match that
+# so `sf` source tracking doesn't report every deployed file as a remote change.
+[force-app/main/default/lwc/**.{js,html,css,xml}]
+insert_final_newline = false
+
+# Tests aren't deployed, so keep them conventional.
+[force-app/main/default/lwc/**/__tests__/**]
+insert_final_newline = true

@@ -10,3 +10,15 @@ package.xml
 
 # LWC Jest
 **/__tests__/**
+
+# Metadata the scratch org creates on its own — not part of this project.
+**/digitalExperiences/**
+**/settings/Security.settings-meta.xml
+**/transactionSecurityPolicies/**
+
+# Orphaned "Assessments Calendar" demo left in an earlier scratch org; not in
+# this repo. Ignored so source tracking stops flagging it. Safe to delete from
+# the org (`sf project delete source`) if it ever comes back.
+**/lwc/calAssessmentsDemo/**
+**/flexipages/Assessments_Calendar.flexipage-meta.xml
+**/tabs/Assessments_Calendar.tab-meta.xml
