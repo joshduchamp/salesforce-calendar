@@ -24,6 +24,16 @@
 .cell__header {
     display: flex;
     justify-content: flex-end;
+    min-height: var(--cal-cell-head, 1.4rem);
+    box-sizing: border-box;
+}
+
+/* Reserves vertical space for this week's spanning-bar band so the chip list
+   starts below it. `--cal-lanes` is set per cell; `--cal-bar-h` is inherited
+   from calMonthView. */
+.cell__lanes {
+    flex: 0 0 auto;
+    height: calc(var(--cal-lanes, 0) * var(--cal-bar-h, 1.15rem));
 }
 
 .cell__date {

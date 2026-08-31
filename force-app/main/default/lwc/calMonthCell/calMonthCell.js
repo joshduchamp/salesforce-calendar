@@ -16,17 +16,32 @@ const MIN_VISIBLE = 3;
 export default class CalMonthCell extends LightningElement {
     /** Midnight Date for this cell. */
     @api day;
-    /** Normalized, decorated events that occur on this day (already ordered). */
+    /** Every event on this day (all-day, multi-day, timed) — feeds the "+N more"
+     * popover and count. Already ordered. */
     @api events = [];
     /** Calendar-wide field display config. */
     @api fieldConfig;
     /** Hard cap on chips regardless of available height. */
     @api maxVisible = 4;
+    /** Number of spanning-bar lanes the week reserves above the chip list. */
+    @api reservedLanes = 0;
     /** True when the day is outside the focused month. */
     @api outside = false;
     /** True when the day is today. */
     @api isToday = false;
     @api locale;
+
+    /** Events rendered as chips in the cell (single-day timed events). Defaults
+     * to `events` so a host that doesn't split them still works. */
+    @api
+    get chipEvents() {
+        return this._chipEvents == null ? this.events || [] : this._chipEvents;
+    }
+    set chipEvents(value) {
+        this._chipEvents = value;
+    }
+
+    _chipEvents;
 
     _fit;
     _popoverOpen = false;
@@ -81,9 +96,14 @@ export default class CalMonthCell extends LightningElement {
             : '';
     }
 
+    /** Height of the spanning-bar gap, as a lane count the CSS multiplies out. */
+    get laneStyle() {
+        return `--cal-lanes: ${Number(this.reservedLanes) || 0};`;
+    }
+
     // ---- Chip list ----------------------------------------------------
     get shownCount() {
-        const total = this.events.length;
+        const total = this.chipEvents.length;
         const cap = Math.min(this.maxVisible, total);
         const fitted = this._fit === undefined ? cap : Math.min(this._fit, cap);
         // Never drop below MIN_VISIBLE (bounded by how many events there are).
@@ -91,11 +111,11 @@ export default class CalMonthCell extends LightningElement {
     }
 
     get visibleEvents() {
-        return this.events.slice(0, this.shownCount);
+        return this.chipEvents.slice(0, this.shownCount);
     }
 
     get overflowCount() {
-        return Math.max(this.events.length - this.shownCount, 0);
+        return Math.max(this.chipEvents.length - this.shownCount, 0);
     }
 
     get hasOverflow() {
@@ -129,11 +149,12 @@ export default class CalMonthCell extends LightningElement {
         const rowHeight = (chip ? chip.getBoundingClientRect().height : 20) + 3;
         const moreHeight = 18;
 
+        const count = this.chipEvents.length;
         let capacity = Math.floor(available / rowHeight);
-        if (this.events.length > capacity) {
+        if (count > capacity) {
             capacity = Math.max(Math.floor((available - moreHeight) / rowHeight), 1);
         }
-        const next = Math.max(Math.min(capacity, this.events.length), this.events.length ? 1 : 0);
+        const next = Math.max(Math.min(capacity, count), count ? 1 : 0);
         if (next !== this._fit) {
             this._fit = next;
         }
@@ -187,8 +208,27 @@ export default class CalMonthCell extends LightningElement {
         clearTimeout(this._closeTimer);
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this._closeTimer = setTimeout(() => {
+            // Keep it open if the pointer is genuinely still over the trigger or
+            // the panel — `mouseleave` also fires spuriously when an overlay is
+            // inserted or the layout shifts.
+            if (this.pointerWithinPopover()) {
+                this.scheduleClose();
+                return;
+            }
             this._popoverOpen = false;
         }, CLOSE_DELAY);
+    }
+
+    pointerWithinPopover() {
+        try {
+            const panel = this.template.querySelector('c-cal-day-events-popover');
+            const trigger = this.refs.more;
+            return Boolean(
+                (panel && panel.matches(':hover')) || (trigger && trigger.matches(':hover'))
+            );
+        } catch (e) {
+            return false;
+        }
     }
 
     drillToDay() {

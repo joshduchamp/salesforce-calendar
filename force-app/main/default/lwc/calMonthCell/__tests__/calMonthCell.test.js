@@ -118,4 +118,28 @@ describe('c-cal-month-cell', () => {
         await flush();
         expect(element.shadowRoot.querySelector('.cell').classList).toContain('cell--today');
     });
+
+    it('renders chips from chipEvents but the popover from the full day list', async () => {
+        const all = makeEvents(5);
+        const element = setup({
+            day: new Date(2026, 7, 29),
+            events: all,
+            chipEvents: all.slice(0, 2),
+            maxVisible: 4
+        });
+        await flush();
+        expect(element.shadowRoot.querySelectorAll('c-cal-event-chip')).toHaveLength(2);
+        expect(element.shadowRoot.querySelector('.cell__more')).toBeNull();
+
+        element.shadowRoot.querySelector('.cell__date').dispatchEvent(new CustomEvent('click'));
+        await flush();
+    });
+
+    it('reserves lane space for the week\'s spanning bars', async () => {
+        const element = setup({ day: new Date(2026, 7, 29), events: [], reservedLanes: 3 });
+        await flush();
+        expect(element.shadowRoot.querySelector('.cell__lanes').style.cssText).toContain(
+            '--cal-lanes: 3'
+        );
+    });
 });

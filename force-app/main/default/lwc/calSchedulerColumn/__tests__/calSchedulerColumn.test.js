@@ -77,4 +77,16 @@ describe('c-cal-scheduler-column', () => {
         await flush();
         expect(element.shadowRoot.querySelectorAll('c-cal-scheduler-event')).toHaveLength(1);
     });
+
+    it('passes each event its overlap column count', async () => {
+        const element = setup({
+            day,
+            events: normalizeEvents([evt('a', 9, 11), evt('b', 10, 12)])
+        });
+        await flush();
+        const counts = [...element.shadowRoot.querySelectorAll('c-cal-scheduler-event')].map(
+            (e) => e.columnCount
+        );
+        expect(counts).toEqual([2, 2]);
+    });
 });

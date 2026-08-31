@@ -25,11 +25,13 @@ describe('c-cal-day-view', () => {
         expect(scheduler.days[0]).toEqual(new Date(2026, 7, 29, 0, 0, 0, 0));
     });
 
-    it('shows a placeholder for the condensed layout', async () => {
+    it('renders the agenda for the condensed layout', async () => {
         const element = setup({ date: new Date(2026, 7, 29), events: [], layout: 'condensed' });
         await flush();
         expect(element.shadowRoot.querySelector('c-cal-scheduler')).toBeNull();
-        expect(element.shadowRoot.querySelector('.view__placeholder')).not.toBeNull();
+        const agenda = element.shadowRoot.querySelector('c-cal-agenda');
+        expect(agenda).not.toBeNull();
+        expect(agenda.days).toHaveLength(1);
     });
 
     it('passes the scheduler hour window through', async () => {

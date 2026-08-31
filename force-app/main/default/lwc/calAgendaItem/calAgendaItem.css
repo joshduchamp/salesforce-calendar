@@ -1,0 +1,21 @@
+:host {
+    display: block;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: 0.5rem;
+    align-items: start;
+}
+
+.item__time {
+    padding-top: 0.125rem;
+    font-size: 0.75rem;
+    color: #706e6b;
+    white-space: nowrap;
+}
+
+.item__chip {
+    min-width: 0;
+}

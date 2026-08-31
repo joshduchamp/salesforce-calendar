@@ -75,21 +75,30 @@ matching rule → per-calendar `color` → `defaultColor` → built-in default.
 | --- | --- |
 | `calToolbar` | today / prev / next, view switcher, layout toggle, range title |
 | `calSourceList` | calendar list with show/hide checkboxes |
-| `calMonthView` | month grid: weekday header + rows of cells |
-| `calMonthCell` | one day cell: date number, as many chips as fit, always-visible "+N more" |
+| `calMonthView` | month grid: weekday header + rows of cells; lane-packs all-day/multi-day events per week (`packLanes`) into spanning bars overlaid on each row |
+| `calMonthCell` | one day cell: date number, spanning-bar lane spacer, single-day timed events as chips, always-visible "+N more" |
 | `calDayEventsPopover` | floating panel listing a day's full event list; opened by hovering/focusing "+N more" |
+| `calEventPopover` | read-only hover card for one event: title, when, calendar, and every configured field; `calCalendar` owns the hover state and positions it |
 | `calEventChip` | compact event pill (month + condensed + all-day bars) |
 | `calWeekView` | resolves the week's 7 (or 5) days and picks a layout |
 | `calDayView` | same for a single day |
+| `calAgenda` | condensed layout: a scrollable chronological list for the range, grouped by day; drops empty days |
+| `calAgendaDay` | one day in the agenda: sticky date heading + the day's rows |
+| `calAgendaItem` | one agenda row: a time label (or "All day") beside a `calEventChip` |
 | `calScheduler` | scheduler layout: day-header row, all-day band, scrollable time grid; owns the hour geometry (`--cal-hour-height`) and auto-scrolls to 8am |
 | `calTimeAxis` | the left-hand hour ruler |
 | `calSchedulerColumn` | one day's column; runs `packColumns` and positions each event box from its time + overlap slot |
-| `calSchedulerEvent` | one positioned timed-event block |
+| `calSchedulerEvent` | one positioned timed-event block; renders configured `field-config` fields when the block is tall enough |
 | `calAllDayRow` | the all-day / multi-day band; lane-packs bars with `packLanes` |
 | `calCore` | pure logic module (date math, layout packing, color/field resolution, event model) |
 
-The condensed (agenda) layout — `calAgenda`, `calAgendaDay`, `calAgendaItem` —
-and month-grid spanning bars are still planned; see the plan file.
+Every event renderer (`calEventChip`, `calSchedulerEvent`) emits bubbling,
+composed `eventselect` / `eventopen` (click / double-click) and
+`eventhover` / `eventhoverend` (pointer or keyboard focus enter / leave, with the
+element's viewport rect). `calCalendar` handles them centrally — clicks become
+the public `eventclick` / `eventopen`; hover drives the `calEventPopover`.
+
+A color-rules legend is still planned; see the plan file.
 
 ## Demo
 

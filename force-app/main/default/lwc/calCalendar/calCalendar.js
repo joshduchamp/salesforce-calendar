@@ -4,6 +4,8 @@ import { normalizeEvents, visibleRange, rangeTitle, step, resolveColor } from 'c
 
 const DEFAULT_VIEW = 'month';
 const DEFAULT_LAYOUT = 'scheduler';
+/** Grace period before the hover card hides after the pointer leaves an event. */
+const HOVER_CARD_HIDE_MS = 120;
 
 /**
  * Presentational, SObject-agnostic calendar. The host passes `events` and
@@ -67,9 +69,16 @@ export default class CalCalendar extends NavigationMixin(LightningElement) {
     _layout = DEFAULT_LAYOUT;
     _visibilityOverrides = {};
     _rangeSignature = '';
+    _hoverEventId = null;
+    _hoverAnchor = null;
+    _hoverTimer = null;
 
     connectedCallback() {
         this.emitRangeChange();
+    }
+
+    disconnectedCallback() {
+        clearTimeout(this._hoverTimer);
     }
 
     renderedCallback() {
@@ -200,6 +209,7 @@ export default class CalCalendar extends NavigationMixin(LightningElement) {
 
     handleViewChange(event) {
         this._view = event.detail.view;
+        this.clearHover();
         this.dispatchEvent(new CustomEvent('viewchange', { detail: { view: this._view } }));
         this.emitRangeChange();
     }
@@ -260,13 +270,48 @@ export default class CalCalendar extends NavigationMixin(LightningElement) {
         }
         this._date = new Date(iso);
         this._view = 'day';
+        this.clearHover();
         this.dispatchEvent(new CustomEvent('viewchange', { detail: { view: 'day' } }));
         this.emitNavigate();
+    }
+
+    // ---- Hover card -------------------------------------------------------
+    handleEventHover(event) {
+        clearTimeout(this._hoverTimer);
+        this._hoverEventId = event.detail.eventId;
+        this._hoverAnchor = event.detail.rect || null;
+    }
+
+    handleEventHoverEnd() {
+        clearTimeout(this._hoverTimer);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this._hoverTimer = setTimeout(() => {
+            this._hoverEventId = null;
+            this._hoverAnchor = null;
+        }, HOVER_CARD_HIDE_MS);
+    }
+
+    clearHover() {
+        clearTimeout(this._hoverTimer);
+        this._hoverEventId = null;
+        this._hoverAnchor = null;
+    }
+
+    get hoveredEvent() {
+        if (!this._hoverEventId) {
+            return null;
+        }
+        return this.preparedEvents.find((event) => event.id === this._hoverEventId) || null;
+    }
+
+    get hoverAnchor() {
+        return this._hoverAnchor;
     }
 
     // ---- Helpers -------------------------------------------------------
     moveBy(direction) {
         this._date = step(this._view, this._date, direction);
+        this.clearHover();
         this.emitNavigate();
     }
 

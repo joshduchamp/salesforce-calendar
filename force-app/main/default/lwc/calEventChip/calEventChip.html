@@ -4,10 +4,13 @@
         style={style}
         role="button"
         tabindex="0"
-        title={event.title}
         onclick={handleClick}
         ondblclick={handleDblClick}
         onkeydown={handleKeydown}
+        onmouseenter={handlePointerEnter}
+        onmouseleave={handlePointerLeave}
+        onfocus={handlePointerEnter}
+        onblur={handlePointerLeave}
     >
         <span class="chip__bar"></span>
         <span class="chip__body">

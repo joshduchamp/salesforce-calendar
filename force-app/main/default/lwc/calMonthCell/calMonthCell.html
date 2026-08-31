@@ -14,6 +14,8 @@
             </button>
         </div>
 
+        <div class="cell__lanes" style={laneStyle} aria-hidden="true"></div>
+
         <div class="cell__events" lwc:ref="list">
             <template for:each={visibleEvents} for:item="event">
                 <c-cal-event-chip

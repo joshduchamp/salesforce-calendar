@@ -3,8 +3,8 @@ import { visibleRange, eachDay } from 'c/calCore';
 
 /**
  * Week view: resolves its 7 (or 5, with weekends hidden) days and hands them to
- * the chosen layout. Only the scheduler layout exists so far; the condensed
- * (agenda) layout lands in a later phase.
+ * the chosen layout — `calScheduler` for the time grid, `calAgenda` for the
+ * condensed list.
  */
 export default class CalWeekView extends LightningElement {
     /** Prepared events overlapping the visible range, decorated with a `color`. */

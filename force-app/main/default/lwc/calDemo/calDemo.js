@@ -55,6 +55,23 @@ export default class CalDemo extends LightningElement {
             meta: { status: 'Scheduled', owner: 'Sam' }
         },
         {
+            id: 'e4b',
+            calendarId: 'personal',
+            title: 'Offsite trip',
+            start: iso(1, 0, 0),
+            end: iso(4, 0, 0),
+            allDay: true,
+            meta: { status: 'Confirmed', location: 'Tahoe' }
+        },
+        {
+            id: 'e4c',
+            calendarId: 'team',
+            title: 'Release freeze',
+            start: iso(-2, 9, 0),
+            end: iso(1, 17, 0),
+            meta: { status: 'Scheduled' }
+        },
+        {
             id: 'e5',
             calendarId: 'team',
             title: 'All-hands',

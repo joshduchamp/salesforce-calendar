@@ -80,6 +80,15 @@ export function occursOnDay(event, day) {
     return startOfDay(day) <= lastCoveredDay(event) && endOfDay(day) >= event.start;
 }
 
+/**
+ * Whether an event renders as a horizontal bar (all-day band / month spanning
+ * bar) rather than a timed chip: any all-day event, or any event that touches
+ * more than one calendar day.
+ */
+export function isBarEvent(event) {
+    return Boolean(event.allDay) || isMultiDay(event);
+}
+
 export function eventsForDay(events, day) {
     return events.filter((event) => occursOnDay(event, day));
 }
@@ -94,7 +103,7 @@ export function partitionDayEvents(events, day) {
     const allDay = [];
     const timed = [];
     for (const event of onDay) {
-        if (event.allDay || isMultiDay(event)) {
+        if (isBarEvent(event)) {
             allDay.push(event);
         } else {
             timed.push(event);

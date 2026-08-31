@@ -25,6 +25,8 @@
                 class="calendar__view"
                 oneventselect={handleEventSelect}
                 oneventopen={handleEventOpen}
+                oneventhover={handleEventHover}
+                oneventhoverend={handleEventHoverEnd}
                 onshowday={handleDrillToDay}
                 ondayclick={handleDrillToDay}
             >
@@ -67,5 +69,14 @@
                 </template>
             </div>
         </div>
+
+        <template if:true={hoveredEvent}>
+            <c-cal-event-popover
+                event={hoveredEvent}
+                field-config={fieldConfig}
+                anchor={hoverAnchor}
+                locale={locale}
+            ></c-cal-event-popover>
+        </template>
     </div>
 </template>

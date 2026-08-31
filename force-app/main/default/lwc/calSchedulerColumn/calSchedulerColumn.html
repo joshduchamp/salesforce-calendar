@@ -4,6 +4,8 @@
             <div key={item.key} class="column__slot" style={item.style}>
                 <c-cal-scheduler-event
                     event={item.event}
+                    column-count={item.columnCount}
+                    field-config={fieldConfig}
                     locale={locale}
                 ></c-cal-scheduler-event>
             </div>

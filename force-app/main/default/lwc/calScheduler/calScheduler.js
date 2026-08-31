@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { hoursInWindow, isMultiDay, occursOnDay, isToday, startOfDay } from 'c/calCore';
+import { hoursInWindow, isBarEvent, occursOnDay, isToday, startOfDay } from 'c/calCore';
 
 const HOUR_HEIGHT = 48;
 const AUTO_SCROLL_HOUR = 8;
@@ -62,11 +62,11 @@ export default class CalScheduler extends LightningElement {
     }
 
     get allDayEvents() {
-        return (this.events || []).filter((event) => event.allDay || isMultiDay(event));
+        return (this.events || []).filter(isBarEvent);
     }
 
     get timedEvents() {
-        return (this.events || []).filter((event) => !(event.allDay || isMultiDay(event)));
+        return (this.events || []).filter((event) => !isBarEvent(event));
     }
 
     get dayColumns() {

@@ -22,7 +22,8 @@ const event = {
     start: new Date(2026, 7, 29, 9, 0),
     end: new Date(2026, 7, 29, 10, 30),
     color: '#2e844a',
-    allDay: false
+    allDay: false,
+    meta: { location: 'Room 4', owner: 'Dana' }
 };
 
 describe('c-cal-scheduler-event', () => {
@@ -62,6 +63,57 @@ describe('c-cal-scheduler-event', () => {
         expect(element.shadowRoot.querySelector('.event').classList).not.toContain('event_short');
     });
 
+    it('shows the time on its own line when there are no fields to show', async () => {
+        const element = setup({ event, locale: 'en-US' });
+        await flush();
+        expect(element.shadowRoot.querySelector('.event__time')).not.toBeNull();
+        expect(element.shadowRoot.querySelector('.event__fields')).toBeNull();
+    });
+
+    it('renders configured fields in place of the time line', async () => {
+        const element = setup({
+            event,
+            fieldConfig: [
+                { key: 'owner', label: 'Owner', showLabel: true },
+                { key: 'location', views: ['month'] }
+            ]
+        });
+        await flush();
+        const fields = [...element.shadowRoot.querySelectorAll('.event__field')].map((n) =>
+            n.textContent.trim()
+        );
+        expect(fields).toEqual(['Owner:Dana']); // location is month-only
+        expect(element.shadowRoot.querySelector('.event__time')).toBeNull();
+    });
+
+    it('shows only the title when the block shares its column width', async () => {
+        const element = setup({
+            event,
+            columnCount: 2,
+            fieldConfig: [{ key: 'owner', showLabel: true }]
+        });
+        await flush();
+        expect(element.shadowRoot.querySelector('.event__title').textContent).toBe('Sprint planning');
+        expect(element.shadowRoot.querySelector('.event__time')).toBeNull();
+        expect(element.shadowRoot.querySelector('.event__fields')).toBeNull();
+    });
+
+    it('drops the field line for events too short to fit it', async () => {
+        const element = setup({
+            event: {
+                id: 's1',
+                title: 'Standup',
+                start: new Date(2026, 7, 29, 9, 0),
+                end: new Date(2026, 7, 29, 9, 15),
+                color: '#1b96ff',
+                meta: { owner: 'Dana' }
+            },
+            fieldConfig: [{ key: 'owner', showLabel: false }]
+        });
+        await flush();
+        expect(element.shadowRoot.querySelector('.event__fields')).toBeNull();
+    });
+
     it('emits eventopen on double click', async () => {
         const element = setup({ event });
         const handler = jest.fn();
@@ -69,5 +121,20 @@ describe('c-cal-scheduler-event', () => {
         await flush();
         element.shadowRoot.querySelector('.event').dispatchEvent(new CustomEvent('dblclick'));
         expect(handler).toHaveBeenCalled();
+    });
+
+    it('emits eventhover / eventhoverend on pointer enter and leave', async () => {
+        const element = setup({ event });
+        const hover = jest.fn();
+        const end = jest.fn();
+        document.body.addEventListener('eventhover', hover);
+        document.body.addEventListener('eventhoverend', end);
+        await flush();
+        const box = element.shadowRoot.querySelector('.event');
+        box.dispatchEvent(new CustomEvent('mouseenter'));
+        box.dispatchEvent(new CustomEvent('mouseleave'));
+        expect(hover.mock.calls[0][0].detail.eventId).toBe('e1');
+        expect(hover.mock.calls[0][0].detail.rect).toBeDefined();
+        expect(end).toHaveBeenCalled();
     });
 });

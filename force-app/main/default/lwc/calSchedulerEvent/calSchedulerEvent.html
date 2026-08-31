@@ -4,12 +4,29 @@
         style={style}
         role="button"
         tabindex="0"
-        title={event.title}
         onclick={handleClick}
         ondblclick={handleDblClick}
         onkeydown={handleKeydown}
+        onmouseenter={handlePointerEnter}
+        onmouseleave={handlePointerLeave}
+        onfocus={handlePointerEnter}
+        onblur={handlePointerLeave}
     >
         <span class="event__title">{event.title}</span>
-        <span class="event__time">{timeLabel}</span>
+        <template if:true={showTime}>
+            <span class="event__time">{timeLabel}</span>
+        </template>
+        <template if:true={hasFields}>
+            <span class="event__fields">
+                <template for:each={fields} for:item="field">
+                    <span key={field.key} class="event__field">
+                        <template if:true={field.showLabel}>
+                            <span class="event__field-label">{field.label}:</span>
+                        </template>
+                        {field.value}
+                    </span>
+                </template>
+            </span>
+        </template>
     </div>
 </template>

@@ -45,6 +45,26 @@ describe('c-cal-event-chip', () => {
         expect(element.shadowRoot.querySelector('.chip__time')).toBeNull();
     });
 
+    it('emits eventhover with the element rect and eventhoverend', async () => {
+        const element = setup({ event: baseEvent });
+        const hover = jest.fn();
+        const end = jest.fn();
+        document.body.addEventListener('eventhover', hover);
+        document.body.addEventListener('eventhoverend', end);
+        await flush();
+
+        const chip = element.shadowRoot.querySelector('.chip');
+        chip.dispatchEvent(new CustomEvent('mouseenter'));
+        expect(hover).toHaveBeenCalled();
+        expect(hover.mock.calls[0][0].detail.eventId).toBe('e1');
+        expect(hover.mock.calls[0][0].detail.rect).toEqual(
+            expect.objectContaining({ top: expect.any(Number), left: expect.any(Number) })
+        );
+
+        chip.dispatchEvent(new CustomEvent('mouseleave'));
+        expect(end).toHaveBeenCalled();
+    });
+
     it('renders configured fields for the current view', async () => {
         const element = setup({
             event: baseEvent,

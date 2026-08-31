@@ -1,0 +1,53 @@
+.pop {
+    position: fixed;
+    z-index: 9500;
+    box-sizing: border-box;
+    padding: 0.5rem 0.625rem;
+    background: white;
+    border: 1px solid #c9c7c5;
+    border-left: 3px solid var(--cal-popover-color, #1b96ff);
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    font-size: 0.75rem;
+    color: #16325c;
+    /* Purely informational — never intercept the pointer or shift hit-testing
+       (an interactive overlay would make elements underneath fire mouseleave). */
+    pointer-events: none;
+}
+
+.pop__title {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.pop__when {
+    margin: 0.25rem 0 0;
+    color: #444;
+}
+
+.pop__cal {
+    margin: 0.125rem 0 0;
+    color: #706e6b;
+}
+
+.pop__fields {
+    margin: 0.5rem 0 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.1875rem 0.5rem;
+}
+
+.pop__row {
+    display: contents;
+}
+
+.pop__label {
+    font-weight: 600;
+    color: #706e6b;
+}
+
+.pop__value {
+    margin: 0;
+    overflow-wrap: anywhere;
+}

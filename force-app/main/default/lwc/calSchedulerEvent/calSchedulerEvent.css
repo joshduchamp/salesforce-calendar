@@ -9,13 +9,13 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 0.125rem 0.25rem;
+    padding: 0.0625rem 0.25rem;
     border-left: 3px solid var(--cal-event-color);
     border-radius: 0.25rem;
     background: color-mix(in srgb, var(--cal-event-color) 16%, white);
     color: #16325c;
     font-size: 0.75rem;
-    line-height: 1.2;
+    line-height: 1.15;
     overflow: hidden;
     cursor: pointer;
 }
@@ -30,7 +30,6 @@
 }
 
 .event__title {
-    display: block;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
@@ -38,21 +37,39 @@
 }
 
 .event__time {
-    display: block;
+    font-size: 0.6875rem;
     opacity: 0.75;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* Short events (< 45 min) can't fit two lines: title and time share one row. */
+/* One field per line, each clipped with an ellipsis; extra lines clip cleanly
+   at the block edge. */
+.event__fields {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    opacity: 0.9;
+    overflow: hidden;
+}
+
+.event__field {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.event__field-label {
+    font-weight: 600;
+    margin-right: 0.125rem;
+}
+
+/* Short events (< 45 min): a single line — title and time share it. */
 .event_short {
     flex-direction: row;
     align-items: baseline;
     gap: 0.25rem;
-    padding-top: 0.0625rem;
-    padding-bottom: 0.0625rem;
-    line-height: 1.15;
 }
 
 .event_short .event__title {
@@ -61,6 +78,6 @@
 }
 
 .event_short .event__time {
-    flex: 0 0 auto;
-    font-size: 0.6875rem;
+    flex: 0 1 auto;
+    min-width: 0;
 }

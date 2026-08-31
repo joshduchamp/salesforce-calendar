@@ -58,6 +58,17 @@ describe('c-cal-day-events-popover', () => {
         expect(handler).toHaveBeenCalled();
     });
 
+    it('lets the chips\' hover intents bubble through to the host calendar', async () => {
+        const element = setup();
+        const hover = jest.fn();
+        element.addEventListener('eventhover', hover);
+        await flush();
+        element.shadowRoot
+            .querySelector('c-cal-event-chip')
+            .dispatchEvent(new CustomEvent('eventhover', { bubbles: true, composed: true }));
+        expect(hover).toHaveBeenCalled();
+    });
+
     it('emits pointer in/out on mouse enter/leave', async () => {
         const element = setup();
         const inHandler = jest.fn();

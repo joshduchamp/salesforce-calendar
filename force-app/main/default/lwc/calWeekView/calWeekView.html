@@ -1,6 +1,11 @@
 <template>
     <template if:true={isCondensed}>
-        <div class="view__placeholder">The condensed week view is coming soon.</div>
+        <c-cal-agenda
+            days={days}
+            events={events}
+            field-config={fieldConfig}
+            locale={locale}
+        ></c-cal-agenda>
     </template>
     <template if:false={isCondensed}>
         <c-cal-scheduler

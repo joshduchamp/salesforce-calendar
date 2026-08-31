@@ -96,10 +96,11 @@ The calendar components know nothing about specific SObjects (no `Event`,
 - Time range / working hours shown in scheduler layout (config exists:
   `schedulerStartHour` / `schedulerEndHour`, default 0–24).
 - Timezone handling (currently browser-local).
-- Multi-day events in the month grid: spanning bars vs. a chip per covered day
-  (currently a chip per day; spanning bars planned).
 
 ## Resolved
 
 - **Drill between views**: clicking a day number or the "+N more" overflow in the
   month grid switches to the day view for that date.
+- **Multi-day events in the month grid**: rendered as spanning bars (all-day and
+  multi-day events lane-packed per week), not a chip per covered day. Single-day
+  timed events stay as chips in the cell.

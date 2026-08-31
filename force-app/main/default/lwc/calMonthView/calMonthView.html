@@ -8,12 +8,28 @@
         <div class="month__body">
             <template for:each={weeks} for:item="week">
                 <div key={week.key} class="month__row">
+                    <div class="month__bars" style={week.barBandStyle}>
+                        <template for:each={week.bars} for:item="bar">
+                            <div key={bar.key} class={bar.className} style={bar.style}>
+                                <c-cal-event-chip
+                                    event={bar.event}
+                                    field-config={fieldConfig}
+                                    view="month"
+                                    dense
+                                    hide-time
+                                    locale={locale}
+                                ></c-cal-event-chip>
+                            </div>
+                        </template>
+                    </div>
                     <template for:each={week.days} for:item="cell">
                         <c-cal-month-cell
                             key={cell.key}
                             class="month__cell"
                             day={cell.day}
                             events={cell.events}
+                            chip-events={cell.chipEvents}
+                            reserved-lanes={week.laneCount}
                             field-config={fieldConfig}
                             max-visible={maxEventsPerDay}
                             outside={cell.outside}

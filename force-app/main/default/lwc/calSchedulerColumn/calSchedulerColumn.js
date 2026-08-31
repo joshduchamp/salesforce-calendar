@@ -21,6 +21,7 @@ export default class CalSchedulerColumn extends LightningElement {
     @api events = [];
     @api startHour = 0;
     @api endHour = 24;
+    @api fieldConfig;
     @api locale;
 
     _day;
@@ -37,6 +38,7 @@ export default class CalSchedulerColumn extends LightningElement {
             return {
                 key: event.id,
                 event,
+                columnCount,
                 style:
                     `top:${band.top * 100}%;` +
                     `height:${band.height * 100}%;` +

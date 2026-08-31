@@ -4,6 +4,11 @@
 }
 
 .month {
+    /* Cell header height + one spanning-bar lane's height. calMonthCell reads
+       both (they cross the shadow boundary as inherited custom properties) to
+       line its date number and lane spacer up with this row's bar band. */
+    --cal-cell-head: 1.4rem;
+    --cal-bar-h: 1.15rem;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -44,6 +49,7 @@
 }
 
 .month__row {
+    position: relative;
     gap: 1px;
     min-height: 0;
 }
@@ -53,4 +59,31 @@
     min-width: 0;
     min-height: 0;
     overflow: hidden;
+}
+
+/* Spanning-bar band, overlaid on the row just below the date-number line. */
+.month__bars {
+    position: absolute;
+    top: var(--cal-cell-head, 1.4rem);
+    left: 0;
+    right: 0;
+    display: grid;
+    gap: 0.1rem 1px;
+    padding: 0 2px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.month__bar {
+    min-width: 0;
+    height: calc(var(--cal-bar-h, 1.15rem) - 0.1rem);
+    pointer-events: auto;
+}
+
+.month__bar_open-start c-cal-event-chip {
+    --cal-chip-radius-start: 0;
+}
+
+.month__bar_open-end c-cal-event-chip {
+    --cal-chip-radius-end: 0;
 }

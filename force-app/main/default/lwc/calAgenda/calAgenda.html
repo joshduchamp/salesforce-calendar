@@ -1,0 +1,17 @@
+<template>
+    <div class="agenda">
+        <template if:true={isEmpty}>
+            <p class="agenda__empty">No events in this range.</p>
+        </template>
+        <template for:each={agendaDays} for:item="entry">
+            <c-cal-agenda-day
+                key={entry.key}
+                day={entry.day}
+                events={entry.events}
+                is-today={entry.isToday}
+                field-config={fieldConfig}
+                locale={locale}
+            ></c-cal-agenda-day>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,19 @@
+<template>
+    <div class="pop" style={panelStyle} role="tooltip">
+        <p class="pop__title">{event.title}</p>
+        <p class="pop__when">{whenLabel}</p>
+        <template if:true={calendarLabel}>
+            <p class="pop__cal">{calendarLabel}</p>
+        </template>
+        <template if:true={hasDetailFields}>
+            <dl class="pop__fields">
+                <template for:each={detailFields} for:item="field">
+                    <div key={field.key} class="pop__row">
+                        <dt class="pop__label">{field.label}</dt>
+                        <dd class="pop__value">{field.value}</dd>
+                    </div>
+                </template>
+            </dl>
+        </template>
+    </div>
+</template>

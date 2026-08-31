@@ -6,8 +6,9 @@ import { resolveFields, formatTime } from 'c/calCore';
  * grid and the condensed/agenda layout. Knows nothing about SObjects; it
  * renders whatever the normalized event + field config give it.
  *
- * Emits (bubbling, composed) `eventselect` on click and `eventopen` on double
- * click so the host `calCalendar` can react without every layer re-dispatching.
+ * Emits (bubbling, composed) `eventselect` on click, `eventopen` on double
+ * click, and `eventhover` / `eventhoverend` on pointer/focus enter and leave so
+ * the host `calCalendar` can react without every layer re-dispatching.
  */
 export default class CalEventChip extends LightningElement {
     /** Normalized event decorated with a `color`. */
@@ -65,13 +66,26 @@ export default class CalEventChip extends LightningElement {
         }
     }
 
-    dispatch(name) {
+    handlePointerEnter(event) {
+        this.dispatch('eventhover', { rect: rectOf(event.currentTarget) });
+    }
+
+    handlePointerLeave() {
+        this.dispatch('eventhoverend');
+    }
+
+    dispatch(name, detail = {}) {
         this.dispatchEvent(
             new CustomEvent(name, {
-                detail: { eventId: this.event?.id },
+                detail: { eventId: this.event?.id, ...detail },
                 bubbles: true,
                 composed: true
             })
         );
     }
+}
+
+function rectOf(el) {
+    const r = el.getBoundingClientRect();
+    return { top: r.top, bottom: r.bottom, left: r.left, right: r.right };
 }

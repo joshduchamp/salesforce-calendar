@@ -1,0 +1,18 @@
+<template>
+    <div class="agenda-day">
+        <div class="agenda-day__gutter">
+            <span class="agenda-day__weekday">{weekdayLabel}</span>
+            <span class={dateClass}>{dateLabel}</span>
+        </div>
+        <div class="agenda-day__events">
+            <template for:each={rows} for:item="row">
+                <c-cal-agenda-item
+                    key={row.key}
+                    event={row.event}
+                    field-config={fieldConfig}
+                    locale={locale}
+                ></c-cal-agenda-item>
+            </template>
+        </div>
+    </div>
+</template>

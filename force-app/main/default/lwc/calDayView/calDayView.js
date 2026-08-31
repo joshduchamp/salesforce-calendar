@@ -2,8 +2,8 @@ import { LightningElement, api } from 'lwc';
 import { startOfDay } from 'c/calCore';
 
 /**
- * Day view: a single-day range handed to the chosen layout. Only the scheduler
- * layout exists so far; the condensed (agenda) layout lands in a later phase.
+ * Day view: a single-day range handed to the chosen layout — `calScheduler` for
+ * the time grid, `calAgenda` for the condensed list.
  */
 export default class CalDayView extends LightningElement {
     /** Prepared events overlapping the visible range, decorated with a `color`. */

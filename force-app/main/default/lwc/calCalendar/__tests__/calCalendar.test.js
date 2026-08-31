@@ -110,6 +110,32 @@ describe('c-cal-calendar', () => {
         expect(events.find((e) => e.id === 'personal-a').color).toBe('#9050e9');
     });
 
+    it('shows a hover card for the hovered event and hides it after leave', async () => {
+        jest.useFakeTimers();
+        const element = setup({ events: eventsAround() });
+        await flush();
+
+        const view = element.shadowRoot.querySelector('.calendar__view');
+        view.dispatchEvent(
+            new CustomEvent('eventhover', {
+                detail: { eventId: 'team-a', rect: { top: 10, bottom: 30, left: 5, right: 90 } },
+                bubbles: true
+            })
+        );
+        await flush();
+
+        const pop = element.shadowRoot.querySelector('c-cal-event-popover');
+        expect(pop).not.toBeNull();
+        expect(pop.event.id).toBe('team-a');
+        expect(pop.anchor).toEqual({ top: 10, bottom: 30, left: 5, right: 90 });
+
+        view.dispatchEvent(new CustomEvent('eventhoverend', { bubbles: true }));
+        jest.runAllTimers();
+        await flush();
+        expect(element.shadowRoot.querySelector('c-cal-event-popover')).toBeNull();
+        jest.useRealTimers();
+    });
+
     it('drills into the day view and navigates on eventopen with a recordId', async () => {
         const events = eventsAround();
         events[0].recordId = '001xx';
