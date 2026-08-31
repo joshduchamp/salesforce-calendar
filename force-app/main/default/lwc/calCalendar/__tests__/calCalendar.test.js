@@ -110,6 +110,35 @@ describe('c-cal-calendar', () => {
         expect(events.find((e) => e.id === 'personal-a').color).toBe('#9050e9');
     });
 
+    it('shows a legend for the color rules that matched visible events', async () => {
+        const element = setup({
+            events: eventsAround(),
+            colorRules: {
+                rules: [
+                    { key: 'status', value: 'Scheduled', color: '#0a0', label: 'Scheduled' },
+                    { key: 'status', value: 'Cancelled', color: '#c00', label: 'Cancelled' }
+                ]
+            }
+        });
+        await flush();
+        const legend = element.shadowRoot.querySelector('c-cal-legend');
+        expect(legend).not.toBeNull();
+        expect(legend.entries).toHaveLength(1);
+        expect(legend.entries[0]).toMatchObject({ label: 'Scheduled', color: '#0a0', count: 1 });
+    });
+
+    it('omits the legend when hide-legend is set', async () => {
+        const element = setup({
+            events: eventsAround(),
+            hideLegend: true,
+            colorRules: {
+                rules: [{ key: 'status', value: 'Scheduled', color: '#0a0', label: 'Scheduled' }]
+            }
+        });
+        await flush();
+        expect(element.shadowRoot.querySelector('c-cal-legend')).toBeNull();
+    });
+
     it('shows a hover card for the hovered event and hides it after leave', async () => {
         jest.useFakeTimers();
         const element = setup({ events: eventsAround() });

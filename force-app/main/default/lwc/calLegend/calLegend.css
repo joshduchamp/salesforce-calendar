@@ -1,0 +1,42 @@
+:host {
+    display: block;
+}
+
+.legend__heading {
+    margin-bottom: 0.5rem;
+    color: #706e6b;
+}
+
+.legend__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.legend__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+}
+
+.legend__swatch {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 0.1875rem;
+    background: var(--cal-legend-color, #1b96ff);
+    flex: 0 0 auto;
+}
+
+.legend__text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.legend__count {
+    margin-left: auto;
+    color: #a8a8a8;
+    font-variant-numeric: tabular-nums;
+}

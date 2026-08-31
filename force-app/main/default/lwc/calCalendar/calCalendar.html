@@ -14,10 +14,18 @@
         <div class={bodyClass}>
             <template if:true={showSidebar}>
                 <aside class="calendar__sidebar">
-                    <c-cal-source-list
-                        calendars={sourceCalendars}
-                        oncalendarvisibilitychange={handleVisibilityChange}
-                    ></c-cal-source-list>
+                    <template if:true={showSourceList}>
+                        <c-cal-source-list
+                            calendars={sourceCalendars}
+                            oncalendarvisibilitychange={handleVisibilityChange}
+                        ></c-cal-source-list>
+                    </template>
+                    <template if:true={showLegend}>
+                        <c-cal-legend
+                            entries={legendEntries}
+                            show-counts={showLegendCounts}
+                        ></c-cal-legend>
+                    </template>
                 </aside>
             </template>
 

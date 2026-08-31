@@ -1,6 +1,13 @@
 import { LightningElement, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { normalizeEvents, visibleRange, rangeTitle, step, resolveColor } from 'c/calCore';
+import {
+    normalizeEvents,
+    visibleRange,
+    rangeTitle,
+    step,
+    resolveColor,
+    activeLegend
+} from 'c/calCore';
 
 const DEFAULT_VIEW = 'month';
 const DEFAULT_LAYOUT = 'scheduler';
@@ -60,6 +67,8 @@ export default class CalCalendar extends NavigationMixin(LightningElement) {
     @api schedulerEndHour = 24;
     @api maxEventsPerDay = 3;
     @api locale;
+    @api hideLegend = false;
+    @api showLegendCounts = false;
 
     // ---- Internal state -----------------------------------------------------
     _events;
@@ -190,8 +199,20 @@ export default class CalCalendar extends NavigationMixin(LightningElement) {
         return this._view === 'day';
     }
 
-    get showSidebar() {
+    get legendEntries() {
+        return this.hideLegend ? [] : activeLegend(this.preparedEvents, this.colorRules);
+    }
+
+    get showLegend() {
+        return this.legendEntries.length > 0;
+    }
+
+    get showSourceList() {
         return (this.calendars || []).length > 0;
+    }
+
+    get showSidebar() {
+        return this.showSourceList || this.showLegend;
     }
 
     get bodyClass() {

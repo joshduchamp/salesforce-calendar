@@ -1,0 +1,18 @@
+<template>
+    <template if:true={hasEntries}>
+        <div class="legend">
+            <p class="legend__heading slds-text-title_caps">{heading}</p>
+            <ul class="legend__list">
+                <template for:each={items} for:item="item">
+                    <li key={item.key} class="legend__item" style={item.style}>
+                        <span class="legend__swatch"></span>
+                        <span class="legend__text">{item.label}</span>
+                        <template if:true={item.showCount}>
+                            <span class="legend__count">{item.count}</span>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </template>
+</template>

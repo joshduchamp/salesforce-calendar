@@ -25,6 +25,8 @@ events; the calendar owns only view / date / layout / calendar-visibility state.
 | `color-rules` | Object | – | Calendar-wide color coding (below). |
 | `scheduler-start-hour` / `scheduler-end-hour` | number | `0` / `24` | Visible hour window. |
 | `max-events-per-day` | number | `3` | Hard cap on month-cell chips; the cell also shows fewer if they don't fit, with a "+N more" that opens a hover popover of the full day. |
+| `hide-legend` | boolean | `false` | Suppress the color-rules legend in the sidebar. |
+| `show-legend-counts` | boolean | `false` | Show each legend row's match count for the visible range. |
 | `locale` | string | browser | Passed to `Intl`. |
 
 ### Events (all `CustomEvent`, `detail` in parentheses)
@@ -69,12 +71,18 @@ Operators: `equals` (default), `notEquals`, `contains`, `startsWith`, `in`,
 `greaterThan`, `lessThan`, `isSet`, `isBlank`. Resolution order per event: first
 matching rule → per-calendar `color` → `defaultColor` → built-in default.
 
+Rules with a `label` drive the sidebar legend (`calLegend`): it lists every rule
+that colored at least one event in the visible range, so it follows navigation
+and calendar-visibility toggles. `hide-legend` turns it off; `show-legend-counts`
+adds the per-rule match count.
+
 ## Internal components
 
 | Component | Responsibility |
 | --- | --- |
 | `calToolbar` | today / prev / next, view switcher, layout toggle, range title |
 | `calSourceList` | calendar list with show/hide checkboxes |
+| `calLegend` | sidebar legend: one swatch + label (+ optional count) per active color rule |
 | `calMonthView` | month grid: weekday header + rows of cells; lane-packs all-day/multi-day events per week (`packLanes`) into spanning bars overlaid on each row |
 | `calMonthCell` | one day cell: date number, spanning-bar lane spacer, single-day timed events as chips, always-visible "+N more" |
 | `calDayEventsPopover` | floating panel listing a day's full event list; opened by hovering/focusing "+N more" |
@@ -97,8 +105,6 @@ composed `eventselect` / `eventopen` (click / double-click) and
 `eventhover` / `eventhoverend` (pointer or keyboard focus enter / leave, with the
 element's viewport rect). `calCalendar` handles them centrally — clicks become
 the public `eventclick` / `eventopen`; hover drives the `calEventPopover`.
-
-A color-rules legend is still planned; see the plan file.
 
 ## Demo
 
