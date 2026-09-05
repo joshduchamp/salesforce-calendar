@@ -1,0 +1,42 @@
+.body {
+    padding: 0 1rem 1rem;
+}
+
+.row {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.hint,
+.error {
+    margin: 0.25rem 0;
+}
+
+.error {
+    color: #ba0517;
+}
+
+.preview {
+    margin-top: 0.5rem;
+}
+
+.preview summary {
+    cursor: pointer;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.0625rem;
+    color: #444;
+}
+
+.preview pre {
+    margin: 0.5rem 0 0;
+    padding: 0.5rem;
+    background: #f3f3f3;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    overflow-x: auto;
+}
+
+.footer {
+    text-align: right;
+}

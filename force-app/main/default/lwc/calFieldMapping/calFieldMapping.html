@@ -1,0 +1,90 @@
+<template>
+    <lightning-card title="Field Mapping" icon-name="utility:mapping">
+        <div class="body">
+            <template if:true={recordError}>
+                <p class="error">{recordError}</p>
+            </template>
+
+            <template if:false={hasTargetObject}>
+                <p class="hint">
+                    Set <strong>Target Object</strong> on this calendar and save the record, then
+                    map its fields here.
+                </p>
+            </template>
+
+            <template if:true={hasTargetObject}>
+                <template if:true={objectInfoError}>
+                    <p class="error">{objectInfoError}</p>
+                </template>
+
+                <lightning-combobox
+                    class="row"
+                    data-slot="title"
+                    label="Title"
+                    required
+                    placeholder="Choose a field"
+                    value={selection.title}
+                    options={titleOptions}
+                    onchange={handleChange}
+                    field-level-help="The text shown on each event."
+                ></lightning-combobox>
+
+                <lightning-combobox
+                    class="row"
+                    data-slot="start"
+                    label="Start"
+                    required
+                    placeholder="Choose a field"
+                    value={selection.start}
+                    options={startOptions}
+                    onchange={handleChange}
+                    field-level-help="Date/time the event begins."
+                ></lightning-combobox>
+
+                <lightning-combobox
+                    class="row"
+                    data-slot="end"
+                    label="End"
+                    value={selection.end}
+                    options={endOptions}
+                    onchange={handleChange}
+                    field-level-help="Date/time the event ends. Leave unset for a point in time."
+                ></lightning-combobox>
+
+                <lightning-combobox
+                    class="row"
+                    data-slot="allDay"
+                    label="All-day"
+                    value={selection.allDay}
+                    options={allDayOptions}
+                    onchange={handleChange}
+                    field-level-help="A checkbox field, or a fixed value for every event."
+                ></lightning-combobox>
+
+                <lightning-combobox
+                    class="row"
+                    data-slot="recordId"
+                    label="Record link"
+                    value={selection.recordId}
+                    options={recordIdOptions}
+                    onchange={handleChange}
+                    field-level-help="Field double-click navigates to. Usually the record's own Id."
+                ></lightning-combobox>
+
+                <details class="preview">
+                    <summary>Preview</summary>
+                    <pre>{mappingJson}</pre>
+                </details>
+            </template>
+        </div>
+
+        <div slot="footer" class="footer">
+            <lightning-button
+                label="Save"
+                variant="brand"
+                disabled={saveDisabled}
+                onclick={handleSave}
+            ></lightning-button>
+        </div>
+    </lightning-card>
+</template>

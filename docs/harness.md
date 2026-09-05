@@ -57,6 +57,12 @@ user views several calendars at once.
 in time. `allDay` blank → all events timed; may also be the literal `true`/`false`.
 `recordId` blank → double-click does not navigate to a record.
 
+On the record page this field is edited through the **Field Mapping** component
+(`c-cal-field-mapping`): it reads `Target_Object__c`, offers each slot a picklist
+of that object's fields (via `getObjectInfo`), and writes the JSON back on Save.
+The raw JSON is still valid input — add the field to the layout or set it through
+the API to bypass the component.
+
 ### `Field_Config__c`
 
 The array `c-cal-calendar` consumes, plus a `source` per entry (the field API
@@ -156,6 +162,7 @@ back to a visited range does not re-enter Apex.
 | `c-cal-workspace` | The only data-aware calendar component. Wires `getWorkspace`, refetches on `rangechange` (debounced, out-of-order-safe), merges N calendars into one `c-cal-calendar` prop set, persists preferences. Targets App / Home pages. A settings control in the calendar's `toolbar-end` slot (or in the empty state) opens a `c-cal-drawer` holding the picker. |
 | `c-cal-calendar-picker` | Presentational. Grouped "My / Shared" checkbox list to choose which calendars to display; emits `calendarselectionchange` / `primarychange`. Distinct from the in-calendar `calSourceList`, which only show/hides already-loaded calendars. Lives inside the workspace drawer, so calendar-subscription choice stays off the main layout — the in-calendar sidebar keeps only the per-view visibility toggles + legend. |
 | `c-cal-drawer` | Generic presentational slide-out panel — see [components.md](components.md). Not harness-specific; the workspace just composes it. |
+| `c-cal-field-mapping` | Record-page helper for `Cal_Calendar__c`. Guided editor for `Field_Mappings__c`: picks each base event field from the Target Object's fields and writes the JSON on Save. Not part of the runtime data path. |
 | `c/calWorkspaceCore` | Pure module: `mergeColorRules`, `mergeFieldConfig`, `resolveDisplayConfig`, `toGenericEvents`. |
 
 Merge precedence for display settings: **user preference, else the

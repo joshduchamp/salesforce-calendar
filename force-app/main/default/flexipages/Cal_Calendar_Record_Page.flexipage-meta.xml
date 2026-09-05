@@ -113,34 +113,6 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Field_Mappings__c</fieldItem>
-                <identifier>RecordField_Mappings_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <name>Facet-5b878d9c-383e-45ed-a197-533450e1e545</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-5b878d9c-383e-45ed-a197-533450e1e545</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:column</componentName>
-                <identifier>flexipage_column3</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-3022ca67-8db7-4526-801c-8e600fb8a295</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
                 <fieldItem>Record.Field_Config__c</fieldItem>
                 <identifier>RecordField_Config_cField</identifier>
             </fieldInstance>
@@ -295,20 +267,8 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
-                <componentInstanceProperties>
-                    <name>columns</name>
-                    <value>Facet-3022ca67-8db7-4526-801c-8e600fb8a295</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>horizontalAlignment</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>label</name>
-                    <value>Field Mapping</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:fieldSection</componentName>
-                <identifier>flexipage_fieldSection2</identifier>
+                <componentName>c:calFieldMapping</componentName>
+                <identifier>calFieldMappingComponent</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
