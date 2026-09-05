@@ -95,7 +95,10 @@ The calendar components know nothing about specific SObjects (no `Event`,
 
 - Time range / working hours shown in scheduler layout (config exists:
   `schedulerStartHour` / `schedulerEndHour`, default 0–24).
-- Timezone handling (currently browser-local).
+- Timezone handling. The calendar renders in the browser timezone. The SObject
+  harness ([harness.md](harness.md)) emits timed events as UTC (`…Z`) and all-day
+  events as floating local midnight to match that. Pinning scheduler hour
+  geometry to the org timezone / business hours is not done.
 
 ## Resolved
 

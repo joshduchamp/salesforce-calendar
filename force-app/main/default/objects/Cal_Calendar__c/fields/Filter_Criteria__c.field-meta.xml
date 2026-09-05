@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Filter_Criteria__c</fullName>
+    <description>Optional SOQL WHERE fragment (no leading WHERE). Placeholders $CURRENT_USER_ID, $RANGE_START, $RANGE_END expand to bind variables. Admin-authored.</description>
+    <externalId>false</externalId>
+    <label>Filter Criteria</label>
+    <length>2000</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>4</visibleLines>
+</CustomField>

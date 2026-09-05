@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Default_Color_Is_Hex</fullName>
+    <active>true</active>
+    <description>Default Color must be a #rrggbb hex value.</description>
+    <errorConditionFormula>AND(
+  NOT(ISBLANK(Default_Color__c)),
+  NOT(REGEX(Default_Color__c, "^#[0-9A-Fa-f]{6}$"))
+)</errorConditionFormula>
+    <errorDisplayField>Default_Color__c</errorDisplayField>
+    <errorMessage>Default Color must be a hex value like #1b96ff.</errorMessage>
+</ValidationRule>

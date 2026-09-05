@@ -106,6 +106,18 @@ composed `eventselect` / `eventopen` (click / double-click) and
 element's viewport rect). `calCalendar` handles them centrally — clicks become
 the public `eventclick` / `eventopen`; hover drives the `calEventPopover`.
 
+## SObject harness
+
+The calendar itself takes host-supplied data. The **harness** is an optional
+layer that sources that data from real records — see [harness.md](harness.md) for
+the object model and Apex. Its LWCs:
+
+| Component | Responsibility |
+| --- | --- |
+| `calWorkspace` | Public entry point for the harness (App / Home page). The only data-aware calendar component: loads calendar definitions + user preferences via Apex, refetches records on `rangechange`, merges N calendars into one `calCalendar` prop set, persists preferences. |
+| `calCalendarPicker` | Grouped "My / Shared" checkbox list to choose which calendar definitions to display; emits `calendarselectionchange` / `primarychange`. |
+| `calWorkspaceCore` | Pure module: `mergeColorRules`, `mergeFieldConfig`, `resolveDisplayConfig`, `toGenericEvents`. |
+
 ## Demo
 
 `c-cal-demo` — the **Calendar Demo** app page / tab (`/lightning/n/Calendar_Demo`).

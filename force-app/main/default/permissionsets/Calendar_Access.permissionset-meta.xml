@@ -4,9 +4,17 @@
         <application>Calendar</application>
         <visible>true</visible>
     </applicationVisibilities>
+    <classAccesses>
+        <apexClass>CalWorkspaceController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <description>Grants access to the Calendar demo app and tab.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Calendar Access</label>
+    <tabSettings>
+        <tab>Cal_Workspace</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
     <tabSettings>
         <tab>Calendar_Demo</tab>
         <visibility>Visible</visibility>

@@ -21,6 +21,10 @@ intent events the calendar emits.
   name required).
 - Pure date / layout / color logic lives in the `c/calCore` module and is
   unit-tested directly (90+ Jest tests).
+- **SObject harness** — a `Cal_Calendar__c` object + Apex layer that maps records
+  from any SObject into the generic event shape, with public / private calendars,
+  a per-user calendar picker, and saved preferences
+  (`c-cal-workspace`). See [docs/harness.md](docs/harness.md).
 
 ## Quick start
 
@@ -31,12 +35,14 @@ npm run lint
 
 sf org create scratch -f config/project-scratch-def.json -a calendar-dev
 sf project deploy start -d force-app
-sf org assign permset -n Calendar_Access
+sf org assign permset -n Calendar_Access   # demo tab
+sf org assign permset -n Calendar_Admin    # harness: manage calendars + run Apex tests
 sf org open -p /lightning/n/Calendar_Demo
 ```
 
 The **Calendar Demo** tab hosts `c-cal-demo` — sample data wired into
-`c-cal-calendar` with no Apex.
+`c-cal-calendar` with no Apex. The **Calendar Workspace** tab hosts
+`c-cal-workspace` — the SObject-backed harness ([docs/harness.md](docs/harness.md)).
 
 ## Using the component
 

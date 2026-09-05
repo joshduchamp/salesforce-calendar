@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>My_Preferences</fullName>
+    <columns>NAME</columns>
+    <columns>Selected_Calendar_Ids__c</columns>
+    <columns>Primary_Calendar__c</columns>
+    <columns>Last_View__c</columns>
+    <columns>Last_Layout__c</columns>
+    <columns>First_Day_Of_Week__c</columns>
+    <columns>LAST_UPDATE</columns>
+    <filterScope>Mine</filterScope>
+    <label>My Preferences</label>
+</ListView>

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Calendar harness record page.</comment>
+        <content>Cal_Calendar_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>Cal_Calendar__c</pageOrSobjectType>
+    </actionOverrides>
     <description>Calendar LWC demo application.</description>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
@@ -8,6 +17,9 @@
     <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
     <label>Calendar</label>
     <navType>Standard</navType>
+    <tabs>Cal_Workspace</tabs>
+    <tabs>Cal_Calendar__c</tabs>
+    <tabs>Cal_User_Preferences__c</tabs>
     <tabs>Calendar_Demo</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

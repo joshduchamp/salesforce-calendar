@@ -1,0 +1,40 @@
+<template>
+    <template if:true={hasCalendars}>
+        <div class="picker">
+            <template for:each={groups} for:item="group">
+                <div key={group.key} class="picker__group">
+                    <p class="picker__heading slds-text-title_caps">{group.heading}</p>
+                    <ul class="picker__list">
+                        <template for:each={group.items} for:item="item">
+                            <li key={item.id} class="picker__item" style={item.style}>
+                                <label class="picker__label">
+                                    <input
+                                        type="checkbox"
+                                        class="picker__checkbox"
+                                        data-id={item.id}
+                                        checked={item.selected}
+                                        onchange={handleToggle}
+                                    />
+                                    <span class="picker__swatch"></span>
+                                    <span class="picker__text" title={item.description}>{item.label}</span>
+                                </label>
+                                <template if:true={item.selected}>
+                                    <label class="picker__primary" title="Use as the primary calendar">
+                                        <input
+                                            type="radio"
+                                            name="cal-primary"
+                                            data-id={item.id}
+                                            checked={item.isPrimary}
+                                            onchange={handlePrimary}
+                                        />
+                                        <span>Primary</span>
+                                    </label>
+                                </template>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+        </div>
+    </template>
+</template>

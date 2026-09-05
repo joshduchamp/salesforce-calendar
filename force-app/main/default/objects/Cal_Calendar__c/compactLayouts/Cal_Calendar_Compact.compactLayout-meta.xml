@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cal_Calendar_Compact</fullName>
+    <fields>Name</fields>
+    <fields>Target_Object__c</fields>
+    <fields>Visibility__c</fields>
+    <fields>Active__c</fields>
+    <label>Calendar Compact</label>
+</CompactLayout>

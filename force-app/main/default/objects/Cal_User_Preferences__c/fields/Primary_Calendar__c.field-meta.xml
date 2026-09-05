@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Primary_Calendar__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Supplies the merged colorRules.defaultColor and sits first in the color-rule / field-config merge order.</description>
+    <externalId>false</externalId>
+    <label>Primary Calendar</label>
+    <referenceTo>Cal_Calendar__c</referenceTo>
+    <relationshipLabel>User Preferences (Primary)</relationshipLabel>
+    <relationshipName>User_Preferences_Primary</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

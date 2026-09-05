@@ -40,6 +40,11 @@ non-functional requirement; see
 [docs/requirements.md](docs/requirements.md#non-functional-requirements) for the
 full statement.
 
+The **SObject harness** (`Cal_Calendar__c` + the `Cal*` Apex classes +
+`c-cal-workspace`) is that edge: it maps records from any object into the generic
+shape. It follows the Apex layering above. The calendar LWCs never import it. See
+[docs/harness.md](docs/harness.md).
+
 ## Requirements
 
 See [docs/requirements.md](docs/requirements.md).
@@ -56,3 +61,6 @@ service module and is unit-tested directly.
 - `npm test` — Jest unit tests (`sfdx-lwc-jest`).
 - `npm run lint` — ESLint over `force-app/main/default/lwc`.
 - `sf project deploy start -d force-app` — deploy to the default scratch org.
+- `sf apex run test -l RunLocalTests` — Apex tests. Needs the `Calendar_Admin`
+  permission set assigned to the running user (this scratch org enforces FLS on
+  Apex DML): `sf org assign permset -n Calendar_Admin`.

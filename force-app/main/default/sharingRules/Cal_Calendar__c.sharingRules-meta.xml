@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Public_Calendars_Visible_To_All</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Everyone can see calendars marked Public. Private calendars stay with their owner (OWD Private).</description>
+        <label>Public Calendars Visible To All</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+        <criteriaItems>
+            <field>Visibility__c</field>
+            <operation>equals</operation>
+            <value>Public</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

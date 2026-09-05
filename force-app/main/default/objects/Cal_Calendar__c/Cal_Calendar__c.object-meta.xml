@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <compactLayoutAssignment>Cal_Calendar_Compact</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Defines a calendar: which SObject it reads, how that object's fields map to the generic event model, and calendar-wide color rules. Display-chrome preferences live on Cal_User_Preferences__c, not here.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <label>Calendar</label>
+    <nameField>
+        <label>Calendar Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Calendars</pluralLabel>
+    <sharingModel>Private</sharingModel>
+</CustomObject>

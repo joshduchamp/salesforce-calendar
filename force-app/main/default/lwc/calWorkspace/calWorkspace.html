@@ -1,0 +1,54 @@
+<template>
+    <div class="workspace">
+        <aside class="workspace__sidebar">
+            <c-cal-calendar-picker
+                calendars={availableCalendars}
+                selected-ids={selectedIds}
+                primary-id={primaryId}
+                oncalendarselectionchange={handleSelectionChange}
+                onprimarychange={handlePrimaryChange}
+            ></c-cal-calendar-picker>
+            <button
+                type="button"
+                class="workspace__save"
+                onclick={handleSave}
+                disabled={saveDisabled}
+            >
+                {saveLabel}
+            </button>
+            <p class="workspace__debug">{debugState}</p>
+        </aside>
+        <div class="workspace__main">
+            <template if:true={truncated}>
+                <p class="workspace__notice">
+                    Some events aren’t shown. Narrow your calendar selection or date range.
+                </p>
+            </template>
+            <template if:true={hasSelection}>
+                <c-cal-calendar
+                    events={events}
+                    calendars={calendarProp}
+                    view={view}
+                    layout={layout}
+                    field-config={mergedFieldConfig}
+                    color-rules={mergedColorRules}
+                    first-day-of-week={firstDayOfWeek}
+                    hide-weekends={hideWeekends}
+                    scheduler-start-hour={schedulerStartHour}
+                    scheduler-end-hour={schedulerEndHour}
+                    max-events-per-day={maxEventsPerDay}
+                    hide-legend={hideLegend}
+                    show-legend-counts={showLegendCounts}
+                    locale={locale}
+                    onrangechange={handleRangeChange}
+                    onviewchange={handleViewChange}
+                    onlayoutchange={handleLayoutChange}
+                    oncalendarvisibilitychange={handleVisibilityChange}
+                ></c-cal-calendar>
+            </template>
+            <template if:false={hasSelection}>
+                <p class="workspace__empty">Pick a calendar from the list to get started.</p>
+            </template>
+        </div>
+    </div>
+</template>
