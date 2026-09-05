@@ -18,7 +18,7 @@ public with sharing class CalWorkspaceController {
     }
 
     /** Events overlapping [rangeStart, rangeEnd] across the given calendars. */
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static CalDto.EventsResult getEvents(List<Id> calendarIds, Datetime rangeStart, Datetime rangeEnd) {
         try {
             return new CalWorkspaceService().fetchEvents(calendarIds, rangeStart, rangeEnd);
