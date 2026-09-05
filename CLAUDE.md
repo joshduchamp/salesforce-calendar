@@ -67,4 +67,33 @@ service module and is unit-tested directly.
 
 ## Development Standards
 
-- No newline for last character in files. 
+- No newline for last character in files.
+
+### Short methods
+
+- A method should fit on one screen — you should not have to scroll to see its
+  start and end. Long methods are a smell: they usually mean the method has more
+  than one job and is hiding complexity. Keeping them short is also what removes
+  the need for most explanatory comments.
+- Same expectation for LWC classes and JS modules: small and focused.
+
+### Comments
+
+Comment intent, not narration. Three places earn a comment:
+
+- **Top of a class** — what it is and its one responsibility.
+- **Top of a method/function** — what it does and, if relevant, what it returns
+  or emits. A self-evident one-liner (a simple getter, a thin delegate) doesn't
+  need one.
+- **Inline** — only where the *why* is not evident from the code: a constraint,
+  a platform gotcha, a deliberate deviation.
+
+Do not write comments that:
+
+- restate what the code plainly does
+- explain standard framework usage or language idioms
+- narrate the investigation that produced the code ("we tried X, then Y…",
+  "finally doing this right")
+
+A comment must read as if the code was always written this way. If it only makes
+sense to someone who saw the conversation that produced it, delete it.

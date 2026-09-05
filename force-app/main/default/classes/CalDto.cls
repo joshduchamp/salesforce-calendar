@@ -69,8 +69,7 @@ public class CalDto {
     }
 
     public class UserPrefsInput {
-        // Strings, not List<Id>/Id — nested Id-typed fields on an @AuraEnabled
-        // wrapper do not deserialize reliably from LWC; convert in Apex.
+        // Ids as String; converted in Apex.
         @AuraEnabled
         public List<String> selectedCalendarIds;
         @AuraEnabled

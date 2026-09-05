@@ -29,8 +29,11 @@ public with sharing class CalWorkspaceController {
 
     /** Upsert the running user's preference row; returns the re-read record. */
     @AuraEnabled
-    public static CalDto.UserPrefs savePreferences(CalDto.UserPrefsInput prefs) {
+    public static CalDto.UserPrefs savePreferences(String prefsJson) {
         try {
+            CalDto.UserPrefsInput prefs = String.isBlank(prefsJson)
+                ? null
+                : (CalDto.UserPrefsInput) JSON.deserialize(prefsJson, CalDto.UserPrefsInput.class);
             return new CalWorkspaceService().savePreferences(prefs);
         } catch (Exception e) {
             throw asAura(e);

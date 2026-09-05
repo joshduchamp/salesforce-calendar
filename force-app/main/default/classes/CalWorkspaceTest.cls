@@ -87,10 +87,10 @@ private class CalWorkspaceTest {
         input.hideWeekends = true;
 
         Test.startTest();
-        CalDto.UserPrefs saved = CalWorkspaceController.savePreferences(input);
+        CalDto.UserPrefs saved = CalWorkspaceController.savePreferences(JSON.serialize(input));
         // second save must update the same row, not create another
         input.view = 'day';
-        CalWorkspaceController.savePreferences(input);
+        CalWorkspaceController.savePreferences(JSON.serialize(input));
         Test.stopTest();
 
         System.assertEquals(1, [SELECT COUNT() FROM Cal_User_Preferences__c]);
@@ -110,7 +110,7 @@ private class CalWorkspaceTest {
         input.selectedCalendarIds = new List<String>{ calA.Id, 'not-an-id', '', null };
 
         Test.startTest();
-        CalDto.UserPrefs saved = CalWorkspaceController.savePreferences(input);
+        CalDto.UserPrefs saved = CalWorkspaceController.savePreferences(JSON.serialize(input));
         Test.stopTest();
 
         System.assertEquals(new List<Id>{ calA.Id }, saved.selectedCalendarIds);
@@ -118,9 +118,8 @@ private class CalWorkspaceTest {
 
     @IsTest
     static void controllerWrapsErrorsAsAura() {
-        CalDto.UserPrefsInput bad = null;
         try {
-            CalWorkspaceController.savePreferences(bad);
+            CalWorkspaceController.savePreferences((String) null);
             System.assert(false, 'expected AuraHandledException');
         } catch (AuraHandledException e) {
             System.assert(true);

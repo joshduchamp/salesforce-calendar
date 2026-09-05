@@ -16,7 +16,7 @@ jest.mock(
 );
 jest.mock(
     '@salesforce/apex/CalWorkspaceController.savePreferences',
-    () => ({ default: jest.fn((args) => Promise.resolve({ ...args.prefs })) }),
+    () => ({ default: jest.fn((args) => Promise.resolve({ ...JSON.parse(args.prefsJson) })) }),
     { virtual: true }
 );
 
@@ -127,7 +127,7 @@ describe('c-cal-workspace', () => {
         await flush();
 
         expect(savePreferences).toHaveBeenCalledTimes(1);
-        const sent = savePreferences.mock.calls[0][0].prefs;
+        const sent = JSON.parse(savePreferences.mock.calls[0][0].prefsJson);
         expect(sent.selectedCalendarIds).toEqual(['a']);
         expect(sent.primaryCalendarId).toBe('a');
         expect(sent.view).toBe('day');

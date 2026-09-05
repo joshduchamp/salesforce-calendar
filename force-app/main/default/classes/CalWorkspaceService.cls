@@ -86,15 +86,8 @@ public with sharing class CalWorkspaceService {
             throw new CalWorkspaceException('No preferences supplied.');
         }
 
-        System.debug(LoggingLevel.ERROR, '[calWS] savePreferences raw input = ' + JSON.serialize(input));
-
         List<Id> requestedIds = toIdList(input.selectedCalendarIds);
         Id requestedPrimary = toId(input.primaryCalendarId);
-
-        System.debug(
-            LoggingLevel.ERROR,
-            '[calWS] requestedIds = ' + requestedIds + ' | requestedPrimary = ' + requestedPrimary
-        );
 
         // Store exactly the Cal_Calendar__c ids the client sent. A calendar the
         // user can no longer see is dropped on read (getWorkspace / getEvents),

@@ -35,14 +35,6 @@
     cursor: default;
 }
 
-.workspace__debug {
-    margin-top: 0.5rem;
-    font-family: monospace;
-    font-size: 0.6875rem;
-    color: #b83b00;
-    word-break: break-all;
-}
-
 .workspace__main {
     flex: 1 1 auto;
     min-width: 0;

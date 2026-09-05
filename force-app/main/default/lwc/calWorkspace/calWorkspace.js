@@ -48,7 +48,6 @@ export default class CalWorkspace extends LightningElement {
     _saving = false;
     _justSaved = false;
     _didLoad = false;
-    _lastSave = 'none';
 
     connectedCallback() {
         // connectedCallback can fire more than once (Lightning re-parents the
@@ -96,17 +95,6 @@ export default class CalWorkspace extends LightningElement {
         return !this.canSave;
     }
 
-    get debugState() {
-        return (
-            `ready=${this._ready} dirty=${this._dirty} ` +
-            `sel=${JSON.stringify(this._selectedIds)} ` +
-            `primary=${this._primaryId || 'null'} ` +
-            `view=${this._display.view || 'null'} ` +
-            `cals=${this._calendars.length} ` +
-            `lastSave=${this._lastSave || 'none'}`
-        );
-    }
-
     get saveLabel() {
         if (this._saving) {
             return 'Saving…';
@@ -136,14 +124,8 @@ export default class CalWorkspace extends LightningElement {
             showLegendCounts: this._display.showLegendCounts,
             locale: this._display.locale
         };
-        this._lastSave = `SENT sel=${JSON.stringify(payload.selectedCalendarIds)}`;
-        // eslint-disable-next-line no-console
-        console.log('[calWS] handleSave', JSON.stringify(payload));
-        savePreferences({ prefs: payload })
-            .then((saved) => {
-                this._lastSave = `OK server-returned sel=${JSON.stringify(saved && saved.selectedCalendarIds)}`;
-                // eslint-disable-next-line no-console
-                console.log('[calWS] save OK', JSON.stringify(saved));
+        savePreferences({ prefsJson: JSON.stringify(payload) })
+            .then(() => {
                 // Keep exactly what the user chose — do not reconcile from the
                 // response. A later loadWorkspace() reconciles on the next open.
                 this._dirty = false;
@@ -153,9 +135,6 @@ export default class CalWorkspace extends LightningElement {
             .catch((error) => {
                 this._error = error;
                 this._saving = false;
-                this._lastSave = `ERROR ${error && error.body ? error.body.message : error}`;
-                // eslint-disable-next-line no-console
-                console.log('[calWS] save ERROR', error);
             });
     }
 
@@ -285,8 +264,6 @@ export default class CalWorkspace extends LightningElement {
     }
 
     handleSelectionChange(event) {
-        // eslint-disable-next-line no-console
-        console.log('[calWS] handleSelectionChange', JSON.stringify(event.detail));
         this._selectedIds = [...event.detail.selectedIds];
         if (this._primaryId && !this._selectedIds.includes(this._primaryId)) {
             this._primaryId = this._selectedIds[0];
