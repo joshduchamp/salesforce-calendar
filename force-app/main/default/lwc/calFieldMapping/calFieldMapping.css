@@ -16,27 +16,30 @@
     color: #ba0517;
 }
 
-.preview {
-    margin-top: 0.5rem;
+.summary {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
 }
 
-.preview summary {
-    cursor: pointer;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.0625rem;
+.summary th,
+.summary td {
+    text-align: left;
+    padding: 0.375rem 0.5rem;
+    border-bottom: 1px solid #e5e5e5;
+    vertical-align: top;
+}
+
+.summary th {
+    width: 8rem;
+    font-weight: 700;
     color: #444;
-}
-
-.preview pre {
-    margin: 0.5rem 0 0;
-    padding: 0.5rem;
-    background: #f3f3f3;
-    border-radius: 0.25rem;
-    font-size: 0.75rem;
-    overflow-x: auto;
 }
 
 .footer {
     text-align: right;
+}
+
+.cancel {
+    margin-right: 0.5rem;
 }

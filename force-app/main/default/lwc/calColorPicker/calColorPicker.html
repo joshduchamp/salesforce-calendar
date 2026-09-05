@@ -1,0 +1,42 @@
+<template>
+    <div class="picker" onfocusout={handleFocusOut}>
+        <template if:true={label}>
+            <span class="field-label">{label}</span>
+        </template>
+
+        <button
+            type="button"
+            class="trigger"
+            aria-haspopup="dialog"
+            aria-expanded={open}
+            onclick={toggle}
+        >
+            <span class="chip" style={triggerStyle}></span>
+            <span class="name">{colorName}</span>
+        </button>
+
+        <template if:true={open}>
+            <div class="panel" role="dialog" aria-label="Choose a color">
+                <div class="grid">
+                    <template for:each={swatches} for:item="swatch">
+                        <button
+                            key={swatch.hex}
+                            type="button"
+                            class={swatch.cssClass}
+                            style={swatch.style}
+                            title={swatch.name}
+                            aria-label={swatch.name}
+                            aria-pressed={swatch.selected}
+                            data-hex={swatch.hex}
+                            onclick={handleSwatch}
+                        ></button>
+                    </template>
+                </div>
+                <label class="custom">
+                    <span>Custom</span>
+                    <input type="color" value={value} onchange={handleCustom} />
+                </label>
+            </div>
+        </template>
+    </div>
+</template>

@@ -55,16 +55,6 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Default_Color__c</fieldItem>
-                <identifier>RecordDefault_Color_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
                 <fieldItem>Record.Row_Limit__c</fieldItem>
                 <identifier>RecordRow_Limit_cField</identifier>
             </fieldInstance>
@@ -77,6 +67,16 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.Description__c</fieldItem>
                 <identifier>RecordDescription_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Filter_Criteria__c</fieldItem>
+                <identifier>RecordFilter_Criteria_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-72a4240d-3137-4f33-925b-e7a6ba1ebc8e</name>
@@ -104,44 +104,6 @@
             </componentInstance>
         </itemInstances>
         <name>Facet-2979c475-a0b5-4f97-b471-56eace24cd70</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Color_Rules__c</fieldItem>
-                <identifier>RecordColor_Rules_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Filter_Criteria__c</fieldItem>
-                <identifier>RecordFilter_Criteria_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <name>Facet-4604a3b0-b56f-4842-a035-24e766c1d875</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-4604a3b0-b56f-4842-a035-24e766c1d875</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:column</componentName>
-                <identifier>flexipage_column4</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-4fffbdd0-66fd-41d8-9e20-500261bf9140</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -210,36 +172,6 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>collapsed</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>enableActionsConfiguration</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>enableActionsInNative</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>hideChatterActions</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>hideSlackAction</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>numVisibleActions</name>
-                    <value>3</value>
-                </componentInstanceProperties>
-                <componentName>force:highlightsPanel</componentName>
-                <identifier>calCalendarHighlights</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
                     <name>columns</name>
                     <value>Facet-2979c475-a0b5-4f97-b471-56eace24cd70</value>
                 </componentInstanceProperties>
@@ -253,36 +185,6 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
                 <identifier>flexipage_fieldSection</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentName>c:calFieldMapping</componentName>
-                <identifier>calFieldMappingComponent</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentName>c:calFieldConfig</componentName>
-                <identifier>calFieldConfigComponent</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>columns</name>
-                    <value>Facet-4fffbdd0-66fd-41d8-9e20-500261bf9140</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>horizontalAlignment</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>label</name>
-                    <value>Display Configuration</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:fieldSection</componentName>
-                <identifier>flexipage_fieldSection3</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -303,35 +205,154 @@
                 <identifier>flexipage_fieldSection4</identifier>
             </componentInstance>
         </itemInstances>
+        <name>Facet-eac2da51-6e0b-456b-83fb-23351346721e</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>calFieldMapping</componentName>
+                <identifier>calFieldMappingComponent</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-fa2db89e-c87a-4c24-9faa-0fa8d8b91f71</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>calFieldConfig</componentName>
+                <identifier>calFieldConfigComponent</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-6iw3xobrxnh</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>calColorRules</componentName>
+                <identifier>calColorRulesComponent</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-416cfbec-62c5-494c-8a2f-51878bf1cc02</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>relatedListComponentOverride</name>
-                    <value>NONE</value>
+                    <name>body</name>
+                    <value>Facet-eac2da51-6e0b-456b-83fb-23351346721e</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>rowsToDisplay</name>
-                    <value>10</value>
+                    <name>title</name>
+                    <value>Standard.Tab.detail</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-fa2db89e-c87a-4c24-9faa-0fa8d8b91f71</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>showActionBar</name>
+                    <name>title</name>
+                    <value>Field Mapping</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-6iw3xobrxnh</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Field Configuration</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab3</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-416cfbec-62c5-494c-8a2f-51878bf1cc02</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Color Rules</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab4</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-e34f37ae-1db5-4c3c-97b9-311a021a4afe</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>actionNames</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>collapsed</name>
                     <value>true</value>
                 </componentInstanceProperties>
-                <componentName>force:relatedListContainer</componentName>
-                <identifier>calCalendarRelated</identifier>
+                <componentInstanceProperties>
+                    <name>enableActionsConfiguration</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>enableActionsInNative</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideChatterActions</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideSlackAction</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>numVisibleActions</name>
+                    <value>3</value>
+                </componentInstanceProperties>
+                <componentName>force:highlightsPanel</componentName>
+                <identifier>calCalendarHighlights</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Tabs</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>tabs</name>
+                    <value>Facet-e34f37ae-1db5-4c3c-97b9-311a021a4afe</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tabset</componentName>
+                <identifier>flexipage_tabset</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <flexiPageRegions>
-        <name>sidebar</name>
-        <type>Region</type>
-    </flexiPageRegions>
     <masterLabel>Calendar Record Page</masterLabel>
     <sobjectType>Cal_Calendar__c</sobjectType>
     <template>
-        <name>flexipage:recordHomeTemplateDesktop</name>
+        <name>flexipage:recordHomeSimpleViewTemplate</name>
     </template>
     <type>RecordPage</type>
 </FlexiPage>

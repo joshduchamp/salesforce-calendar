@@ -1,0 +1,201 @@
+<template>
+    <lightning-card title="Color Rules" icon-name="utility:color_swatch">
+        <template if:true={showEditButton}>
+            <lightning-button-icon
+                slot="actions"
+                class="edit-toggle"
+                icon-name="utility:edit"
+                alternative-text="Edit color rules"
+                onclick={handleEdit}
+            ></lightning-button-icon>
+        </template>
+
+        <div class="body">
+            <template if:true={recordError}>
+                <p class="error">{recordError}</p>
+            </template>
+
+            <template if:false={hasKeys}>
+                <p class="hint">
+                    Add at least one field in <strong>Field Configuration</strong> first. Color
+                    rules match on those fields — e.g. color every event whose <em>status</em> is
+                    Cancelled.
+                </p>
+            </template>
+
+            <template if:true={hasKeys}>
+                <!-- Read view (default): condensed summary -->
+                <template if:false={isEdit}>
+                    <table class="summary">
+                        <thead>
+                            <tr>
+                                <th>Color</th>
+                                <th>Field</th>
+                                <th>Condition</th>
+                                <th>Legend label</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={summaryRows} for:item="row">
+                                <tr key={row.id}>
+                                    <td>
+                                        <span class="swatch" style={row.swatchStyle}></span>
+                                    </td>
+                                    <td>{row.field}</td>
+                                    <td>{row.condition}</td>
+                                    <td>{row.label}</td>
+                                </tr>
+                            </template>
+                            <tr class="default-row">
+                                <td>
+                                    <span class="swatch" style={defaultSwatchStyle}></span>
+                                </td>
+                                <td colspan="3">{defaultColorSummary}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </template>
+
+                <!-- Edit view: full editor -->
+                <template if:true={isEdit}>
+                    <p class="hint">
+                        Rules are checked top to bottom; the first match colors the event. Give a
+                        rule a legend label to list it in the calendar's sidebar legend.
+                    </p>
+
+                    <template if:false={hasRows}>
+                        <p class="empty">No rules yet.</p>
+                    </template>
+
+                    <template for:each={displayRows} for:item="row">
+                        <div key={row.id} class="entry">
+                            <div class="entry-head">
+                                <span class="entry-title">Rule {row.position}</span>
+                                <div class="entry-actions">
+                                    <lightning-button-icon
+                                        icon-name="utility:up"
+                                        alternative-text="Move up"
+                                        size="x-small"
+                                        data-id={row.id}
+                                        data-act="up"
+                                        disabled={row.isFirst}
+                                        onclick={handleRowAction}
+                                    ></lightning-button-icon>
+                                    <lightning-button-icon
+                                        icon-name="utility:down"
+                                        alternative-text="Move down"
+                                        size="x-small"
+                                        data-id={row.id}
+                                        data-act="down"
+                                        disabled={row.isLast}
+                                        onclick={handleRowAction}
+                                    ></lightning-button-icon>
+                                    <lightning-button-icon
+                                        icon-name="utility:delete"
+                                        alternative-text="Remove"
+                                        size="x-small"
+                                        data-id={row.id}
+                                        data-act="remove"
+                                        onclick={handleRowAction}
+                                    ></lightning-button-icon>
+                                </div>
+                            </div>
+
+                            <lightning-combobox
+                                class="row"
+                                data-id={row.id}
+                                data-prop="key"
+                                label="Field"
+                                value={row.key}
+                                options={row.keyOptions}
+                                onchange={handleChange}
+                                field-level-help="The event field this rule tests. Comes from Field Configuration."
+                            ></lightning-combobox>
+
+                            <lightning-combobox
+                                class="row"
+                                data-id={row.id}
+                                data-prop="operator"
+                                label="Condition"
+                                value={row.operator}
+                                options={operatorOptions}
+                                onchange={handleChange}
+                            ></lightning-combobox>
+
+                            <template if:true={row.showValue}>
+                                <lightning-input
+                                    class="row"
+                                    data-id={row.id}
+                                    data-prop="value"
+                                    label={row.valueLabel}
+                                    value={row.value}
+                                    onchange={handleChange}
+                                ></lightning-input>
+                            </template>
+
+                            <c-cal-color-picker
+                                class="row"
+                                data-id={row.id}
+                                label="Color"
+                                value={row.color}
+                                onchange={handleRowColor}
+                            ></c-cal-color-picker>
+
+                            <lightning-input
+                                class="row"
+                                data-id={row.id}
+                                data-prop="label"
+                                label="Legend label"
+                                placeholder="Leave blank to keep this rule out of the legend"
+                                value={row.label}
+                                onchange={handleChange}
+                            ></lightning-input>
+                        </div>
+                    </template>
+
+                    <lightning-button
+                        class="add"
+                        label="Add rule"
+                        icon-name="utility:add"
+                        onclick={handleAdd}
+                    ></lightning-button>
+
+                    <div class="default-block">
+                        <span class="entry-title">Default color</span>
+                        <p class="hint">Colors every event that no rule above matches.</p>
+                        <c-cal-color-picker
+                            class="row"
+                            value={defaultColor}
+                            onchange={handleDefaultColor}
+                        ></c-cal-color-picker>
+                    </div>
+
+                    <template if:true={showProblems}>
+                        <ul class="problems">
+                            <template for:each={problems} for:item="problem">
+                                <li key={problem} class="error">{problem}</li>
+                            </template>
+                        </ul>
+                    </template>
+                </template>
+            </template>
+        </div>
+
+        <template if:true={isEdit}>
+            <div slot="footer" class="footer">
+                <lightning-button
+                    class="cancel"
+                    label="Cancel"
+                    onclick={handleCancel}
+                ></lightning-button>
+                <lightning-button
+                    class="save"
+                    label="Save"
+                    variant="brand"
+                    disabled={saveDisabled}
+                    onclick={handleSave}
+                ></lightning-button>
+            </div>
+        </template>
+    </lightning-card>
+</template>

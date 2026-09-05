@@ -19,11 +19,14 @@ One record = one calendar. Created and edited through standard record pages
 `Visibility__c = 'Public'` record with all internal users, so a user sees their
 own private calendars plus all public ones.
 
-The **Calendar Layout** page layout groups the fields (Calendar / Field Mapping /
-Display Configuration / System Information). A **Calendar Record Page** Lightning
-page (`Cal_Calendar_Record_Page`) is assigned for the object inside the Calendar
-app; to use it everywhere, activate it as the org default in
-App Builder (Setup → Object Manager → Calendar → Lightning Record Pages).
+A **Calendar Record Page** Lightning page (`Cal_Calendar_Record_Page`) is assigned
+for the object inside the Calendar app; to use it everywhere, activate it as the
+org default in App Builder (Setup → Object Manager → Calendar → Lightning Record
+Pages). It shows the plain fields (Filter Criteria included) in one **Calendar**
+section, then the three guided editors — Field Mapping, Field Configuration, Color
+Rules — each of which owns its JSON field. The classic **Calendar Layout** page
+layout still exposes `Field_Mappings__c` / `Field_Config__c` / `Color_Rules__c` as
+raw JSON fields, the documented way to bypass the components.
 
 | Field | Purpose |
 | --- | --- |
@@ -58,10 +61,11 @@ in time. `allDay` blank → all events timed; may also be the literal `true`/`fa
 `recordId` blank → double-click does not navigate to a record.
 
 On the record page this field is edited through the **Field Mapping** component
-(`c-cal-field-mapping`): it reads `Target_Object__c`, offers each slot a picklist
-of that object's fields (via `getObjectInfo`), and writes the JSON back on Save.
-The raw JSON is still valid input — add the field to the layout or set it through
-the API to bypass the component.
+(`c-cal-field-mapping`). It opens as a condensed read-only summary; a header
+pencil expands the guided picker — each slot a picklist of the Target Object's
+fields (via `getObjectInfo`) — with Cancel / Save. The raw JSON is still valid
+input — add the field to the layout or set it through the API to bypass the
+component.
 
 ### `Field_Config__c`
 
@@ -99,6 +103,16 @@ API to bypass the component.
 
 Every rule `key` **must** be a `Field_Config__c` key (so its source field is
 queried). Rules are evaluated in the browser by `c/calCore`.
+
+On the record page this field is edited through the **Color Rules** component
+(`c-cal-color-rules`). It opens as a condensed read-only summary — one swatch +
+field + condition + legend label per rule, then the fallback color; a header
+pencil expands the full editor — an add/remove/reorder list of rules, each with
+the field (a picklist of `Field_Config__c` keys), the operator, its value, a
+legend label, and a color, plus the `defaultColor` — with Cancel / Save. Colors
+are chosen from a named palette (`c-cal-color-picker`), not typed as hex. The raw
+JSON is still valid input — add the field to the layout or set it through the API
+to bypass the component.
 
 ### `Filter_Criteria__c`
 
@@ -170,8 +184,10 @@ back to a visited range does not re-enter Apex.
 | `c-cal-workspace` | The only data-aware calendar component. Wires `getWorkspace`, refetches on `rangechange` (debounced, out-of-order-safe), merges N calendars into one `c-cal-calendar` prop set, persists preferences. Targets App / Home pages. A settings control in the calendar's `toolbar-end` slot (or in the empty state) opens a `c-cal-drawer` holding the picker. |
 | `c-cal-calendar-picker` | Presentational. Grouped "My / Shared" checkbox list to choose which calendars to display; emits `calendarselectionchange` / `primarychange`. Distinct from the in-calendar `calSourceList`, which only show/hides already-loaded calendars. Lives inside the workspace drawer, so calendar-subscription choice stays off the main layout — the in-calendar sidebar keeps only the per-view visibility toggles + legend. |
 | `c-cal-drawer` | Generic presentational slide-out panel — see [components.md](components.md). Not harness-specific; the workspace just composes it. |
-| `c-cal-field-mapping` | Record-page helper for `Cal_Calendar__c`. Guided editor for `Field_Mappings__c`: picks each base event field from the Target Object's fields and writes the JSON on Save. Not part of the runtime data path. |
+| `c-cal-field-mapping` | Record-page helper for `Cal_Calendar__c`. Read-only summary of `Field_Mappings__c`; a pencil opens the guided per-slot field picker. Not part of the runtime data path. |
 | `c-cal-field-config` | Record-page helper for `Cal_Calendar__c`. Read-only summary of `Field_Config__c` (the ordered extra fields shown on events); a pencil opens the guided add/remove/reorder editor. Not part of the runtime data path. |
+| `c-cal-color-rules` | Record-page helper for `Cal_Calendar__c`. Read-only summary of `Color_Rules__c` (the calendar-wide color rules + fallback color); a pencil opens the guided add/remove/reorder editor. Colors are picked from a named palette via `c-cal-color-picker`. Not part of the runtime data path. |
+| `c-cal-color-picker` | Presentational. A labelled swatch that opens a panel of named colors (plus a native picker), so a color is chosen by sight rather than by hex. Controlled — `value` in, `change` ({ value }) out. |
 | `c/calWorkspaceCore` | Pure module: `mergeColorRules`, `mergeFieldConfig`, `resolveDisplayConfig`, `toGenericEvents`. |
 
 Merge precedence for display settings: **user preference, else the

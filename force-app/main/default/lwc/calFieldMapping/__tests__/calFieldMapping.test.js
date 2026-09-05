@@ -38,9 +38,35 @@ function flush() {
     return Promise.resolve().then(() => Promise.resolve());
 }
 
+/** Emit both wires and settle. */
+async function load(targetObject, fieldMappings) {
+    const element = setup();
+    getRecord.emit(record(targetObject, fieldMappings));
+    getObjectInfo.emit(OBJECT_INFO);
+    await flush();
+    return element;
+}
+
+/** Click the header pencil to open the guided picker. */
+async function openEditor(element) {
+    element.shadowRoot.querySelector('.edit-toggle').click();
+    await flush();
+}
+
 function combobox(element, slot) {
     return element.shadowRoot.querySelector(`lightning-combobox[data-slot="${slot}"]`);
 }
+
+function summaryText(element) {
+    return [...element.shadowRoot.querySelectorAll('.summary tr')].map((tr) => [
+        tr.querySelector('th').textContent,
+        tr.querySelector('td').textContent
+    ]);
+}
+
+beforeEach(() => {
+    updateRecord.mockResolvedValue({});
+});
 
 afterEach(() => {
     while (document.body.firstChild) {
@@ -51,57 +77,73 @@ afterEach(() => {
 
 describe('c-cal-field-mapping', () => {
     it('prompts for a Target Object when none is set', async () => {
-        const element = setup();
-        getRecord.emit(record(null, null));
-        await flush();
+        const element = await load(null, null);
         expect(element.shadowRoot.querySelector('.hint')).not.toBeNull();
+        expect(element.shadowRoot.querySelector('.edit-toggle')).toBeNull();
         expect(combobox(element, 'title')).toBeNull();
     });
 
+    it('defaults to a condensed read-only summary of the stored mapping', async () => {
+        const element = await load(
+            'Event',
+            '{"title":"Subject","start":"StartDateTime","allDay":true,"recordId":"Id"}'
+        );
+
+        expect(combobox(element, 'title')).toBeNull();
+        expect(element.shadowRoot.querySelector('.save')).toBeNull();
+        expect(summaryText(element)).toEqual([
+            ['Title', 'Subject'],
+            ['Start', 'StartDateTime'],
+            ['End', 'Point in time (no end)'],
+            ['All-day', 'Always all-day'],
+            ['Record link', 'This record (Id)']
+        ]);
+    });
+
+    it('opens the guided picker from the header pencil', async () => {
+        const element = await load('Event', '{"title":"Subject","start":"StartDateTime"}');
+        expect(combobox(element, 'title')).toBeNull();
+
+        await openEditor(element);
+        expect(combobox(element, 'title')).not.toBeNull();
+        expect(element.shadowRoot.querySelector('.save')).not.toBeNull();
+        expect(element.shadowRoot.querySelector('.edit-toggle')).toBeNull();
+    });
+
     it('renders a combobox per slot with options filtered by field type', async () => {
-        const element = setup();
-        getRecord.emit(record('Event', null));
-        getObjectInfo.emit(OBJECT_INFO);
-        await flush();
+        const element = await load('Event', null);
+        await openEditor(element);
 
         expect(combobox(element, 'title').options.map((o) => o.value)).toEqual(
             expect.arrayContaining(['Subject', 'Description', 'WhatId'])
         );
-        // start accepts date/datetime only
         const startValues = combobox(element, 'start').options.map((o) => o.value);
         expect(startValues).toEqual(expect.arrayContaining(['StartDateTime', 'ActivityDate']));
         expect(startValues).not.toContain('Subject');
-        // allDay offers the literal choices plus boolean fields
         expect(combobox(element, 'allDay').options.map((o) => o.value)).toEqual(
             expect.arrayContaining(['__true__', '__false__', 'IsAllDayEvent'])
         );
-        // recordId offers "this record" plus reference fields
         expect(combobox(element, 'recordId').options.map((o) => o.value)).toEqual(
             expect.arrayContaining(['Id', 'WhatId'])
         );
     });
 
-    it('seeds the pickers and JSON preview from the stored mapping', async () => {
-        const element = setup();
-        getRecord.emit(
-            record('Event', '{"title":"Subject","start":"StartDateTime","allDay":true}')
+    it('seeds the pickers from the stored mapping', async () => {
+        const element = await load(
+            'Event',
+            '{"title":"Subject","start":"StartDateTime","allDay":true}'
         );
-        getObjectInfo.emit(OBJECT_INFO);
-        await flush();
+        await openEditor(element);
 
         expect(combobox(element, 'title').value).toBe('Subject');
         expect(combobox(element, 'allDay').value).toBe('__true__');
-        const preview = JSON.parse(element.shadowRoot.querySelector('pre').textContent);
-        expect(preview).toEqual({ title: 'Subject', start: 'StartDateTime', allDay: true });
     });
 
     it('keeps Save disabled until title and start are chosen', async () => {
-        const element = setup();
-        getRecord.emit(record('Event', null));
-        getObjectInfo.emit(OBJECT_INFO);
-        await flush();
+        const element = await load('Event', null);
+        await openEditor(element);
 
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('.save');
         expect(button.disabled).toBe(true);
 
         combobox(element, 'title').dispatchEvent(
@@ -117,20 +159,17 @@ describe('c-cal-field-mapping', () => {
         expect(button.disabled).toBe(false);
     });
 
-    it('writes Field_Mappings__c JSON on Save and shows a success toast', async () => {
-        updateRecord.mockResolvedValue({});
-        const element = setup();
+    it('writes Field_Mappings__c JSON on Save, toasts, and returns to the summary', async () => {
+        const element = await load('Event', '{"title":"Subject","start":"StartDateTime"}');
         const toast = jest.fn();
         element.addEventListener('lightning__showtoast', toast);
-        getRecord.emit(record('Event', '{"title":"Subject","start":"StartDateTime"}'));
-        getObjectInfo.emit(OBJECT_INFO);
-        await flush();
+        await openEditor(element);
 
         combobox(element, 'end').dispatchEvent(
             new CustomEvent('change', { detail: { value: 'EndDateTime' } })
         );
         await flush();
-        element.shadowRoot.querySelector('lightning-button').click();
+        element.shadowRoot.querySelector('.save').click();
         await flush();
 
         const { fields } = updateRecord.mock.calls[0][0];
@@ -141,25 +180,44 @@ describe('c-cal-field-mapping', () => {
             end: 'EndDateTime'
         });
         expect(toast.mock.calls[0][0].detail.variant).toBe('success');
+        expect(combobox(element, 'title')).toBeNull();
+        expect(element.shadowRoot.querySelector('.summary')).not.toBeNull();
     });
 
-    it('shows an error toast when the save is rejected', async () => {
+    it('shows an error toast and stays in the editor when the save is rejected', async () => {
         updateRecord.mockRejectedValue({ body: { message: 'title="Bad" is unknown' } });
-        const element = setup();
+        const element = await load('Event', '{"title":"Subject","start":"StartDateTime"}');
         const toast = jest.fn();
         element.addEventListener('lightning__showtoast', toast);
-        getRecord.emit(record('Event', '{"title":"Subject","start":"StartDateTime"}'));
-        getObjectInfo.emit(OBJECT_INFO);
-        await flush();
+        await openEditor(element);
 
         combobox(element, 'title').dispatchEvent(
             new CustomEvent('change', { detail: { value: 'Description' } })
         );
         await flush();
-        element.shadowRoot.querySelector('lightning-button').click();
+        element.shadowRoot.querySelector('.save').click();
         await flush();
 
         expect(toast.mock.calls[0][0].detail.variant).toBe('error');
         expect(toast.mock.calls[0][0].detail.message).toBe('title="Bad" is unknown');
+        expect(combobox(element, 'title')).not.toBeNull();
+    });
+
+    it('discards edits and returns to the summary on Cancel', async () => {
+        const element = await load('Event', '{"title":"Subject","start":"StartDateTime"}');
+        await openEditor(element);
+
+        combobox(element, 'title').dispatchEvent(
+            new CustomEvent('change', { detail: { value: 'Description' } })
+        );
+        await flush();
+
+        element.shadowRoot.querySelector('.cancel').click();
+        await flush();
+
+        expect(summaryText(element)[0]).toEqual(['Title', 'Subject']);
+
+        await openEditor(element);
+        expect(combobox(element, 'title').value).toBe('Subject');
     });
 });

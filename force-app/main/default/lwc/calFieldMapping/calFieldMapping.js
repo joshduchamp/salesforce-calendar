@@ -26,6 +26,10 @@ const REF_TYPES = new Set(['reference']);
 
 const EMPTY_SELECTION = { title: '', start: '', end: '', allDay: '', recordId: '' };
 
+const END_NONE = 'Point in time (no end)';
+const ALLDAY_NONE = 'Not set — every event is timed';
+const RECORD_NONE = 'No record link';
+
 /** A stored `allDay` value → the combobox value that represents it. */
 function allDayToValue(raw) {
     if (raw === true || raw === 'true') {
@@ -86,16 +90,29 @@ function buildMapping(sel) {
     return out;
 }
 
+/** allDay slot state → how it reads in the summary. */
+function allDaySummary(value) {
+    if (value === LITERAL_TRUE) {
+        return 'Always all-day';
+    }
+    if (value === LITERAL_FALSE) {
+        return 'Always timed';
+    }
+    return value || ALLDAY_NONE;
+}
+
 /**
  * Record-page helper that maps the five base event fields (title, start, end,
  * allDay, recordId) to fields on the calendar's Target Object and writes the
- * result to Cal_Calendar__c.Field_Mappings__c. Replaces hand-editing that JSON.
+ * result to Cal_Calendar__c.Field_Mappings__c. Opens as a read-only summary; a
+ * header pencil expands the guided picker.
  */
 export default class CalFieldMapping extends LightningElement {
     @api recordId;
 
     record;
     selection = { ...EMPTY_SELECTION };
+    mode = 'view';
     dirty = false;
     saving = false;
     recordError;
@@ -128,6 +145,26 @@ export default class CalFieldMapping extends LightningElement {
         return !!this.targetObject;
     }
 
+    get isEdit() {
+        return this.mode === 'edit';
+    }
+
+    get showEditButton() {
+        return this.hasTargetObject && !this.isEdit;
+    }
+
+    /** Condensed read-only lines for the default (view) mode. */
+    get summaryRows() {
+        const s = this.selection;
+        return [
+            { key: 'title', label: 'Title', value: s.title || 'Not set' },
+            { key: 'start', label: 'Start', value: s.start || 'Not set' },
+            { key: 'end', label: 'End', value: s.end || END_NONE },
+            { key: 'allDay', label: 'All-day', value: allDaySummary(s.allDay) },
+            { key: 'recordId', label: 'Record link', value: recordIdSummary(s.recordId) }
+        ];
+    }
+
     get fieldsSorted() {
         const fields = (this.objectInfo && this.objectInfo.fields) || {};
         return Object.values(fields).sort((a, b) => a.label.localeCompare(b.label));
@@ -157,7 +194,7 @@ export default class CalFieldMapping extends LightningElement {
 
     get endOptions() {
         return this.withCurrent(
-            [{ label: 'Point in time (no end)', value: '' }, ...this.optionsFor(DATE_TYPES)],
+            [{ label: END_NONE, value: '' }, ...this.optionsFor(DATE_TYPES)],
             this.selection.end
         );
     }
@@ -165,7 +202,7 @@ export default class CalFieldMapping extends LightningElement {
     get allDayOptions() {
         return this.withCurrent(
             [
-                { label: 'Not set — every event is timed', value: '' },
+                { label: ALLDAY_NONE, value: '' },
                 { label: 'Always all-day', value: LITERAL_TRUE },
                 { label: 'Always timed', value: LITERAL_FALSE },
                 ...this.optionsFor(BOOL_TYPES)
@@ -177,7 +214,7 @@ export default class CalFieldMapping extends LightningElement {
     get recordIdOptions() {
         return this.withCurrent(
             [
-                { label: 'No record link', value: '' },
+                { label: RECORD_NONE, value: '' },
                 { label: 'This record (Id)', value: 'Id' },
                 ...this.optionsFor(REF_TYPES)
             ],
@@ -197,6 +234,17 @@ export default class CalFieldMapping extends LightningElement {
         return !this.canSave;
     }
 
+    handleEdit() {
+        this.mode = 'edit';
+    }
+
+    /** Leave edit mode, discarding unsaved changes. */
+    handleCancel() {
+        this.dirty = false;
+        this.selection = parseMapping(getFieldValue(this.record, FIELD_MAPPINGS_FIELD));
+        this.mode = 'view';
+    }
+
     handleChange(event) {
         const slot = event.target.dataset.slot;
         this.selection = { ...this.selection, [slot]: event.detail.value };
@@ -210,6 +258,7 @@ export default class CalFieldMapping extends LightningElement {
         try {
             await updateRecord({ fields });
             this.dirty = false;
+            this.mode = 'view';
             this.toast('Saved', 'Field mapping updated.', 'success');
         } catch (e) {
             this.toast('Could not save', reduce(e), 'error');
@@ -221,6 +270,14 @@ export default class CalFieldMapping extends LightningElement {
     toast(title, message, variant) {
         this.dispatchEvent(new ShowToastEvent({ title, message, variant }));
     }
+}
+
+/** recordId slot state → how it reads in the summary. */
+function recordIdSummary(value) {
+    if (value === 'Id') {
+        return 'This record (Id)';
+    }
+    return value || RECORD_NONE;
 }
 
 function reduce(error) {
