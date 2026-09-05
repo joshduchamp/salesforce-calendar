@@ -45,6 +45,12 @@ events; the calendar owns only view / date / layout / calendar-visibility state.
 
 `next()`, `previous()`, `today()`, `goToDate(value)`.
 
+### Slots
+
+| Slot | Position | Notes |
+| --- | --- | --- |
+| `toolbar-end` | End (right) of the header row, after the toolbar's view switcher | For a host-owned control such as a settings trigger. Empty by default — renders nothing and adds no spacing. |
+
 ## Generic event shape
 
 ```
@@ -99,6 +105,7 @@ adds the per-rule match count.
 | `calSchedulerEvent` | one positioned timed-event block; renders configured `field-config` fields when the block is tall enough |
 | `calAllDayRow` | the all-day / multi-day band; lane-packs bars with `packLanes` |
 | `calCore` | pure logic module (date math, layout packing, color/field resolution, event model) |
+| `calDrawer` | generic slide-out panel over a backdrop (`side` left/right, `size` small/medium/large); slots its body, emits `close` on backdrop / close button / Escape |
 
 Every event renderer (`calEventChip`, `calSchedulerEvent`) emits bubbling,
 composed `eventselect` / `eventopen` (click / double-click) and
@@ -114,7 +121,7 @@ the object model and Apex. Its LWCs:
 
 | Component | Responsibility |
 | --- | --- |
-| `calWorkspace` | Public entry point for the harness (App / Home page). The only data-aware calendar component: loads calendar definitions + user preferences via Apex, refetches records on `rangechange`, merges N calendars into one `calCalendar` prop set, persists preferences. |
+| `calWorkspace` | Public entry point for the harness (App / Home page). The only data-aware calendar component: loads calendar definitions + user preferences via Apex, refetches records on `rangechange`, merges N calendars into one `calCalendar` prop set, persists preferences. A settings control — projected into `calCalendar`'s `toolbar-end` slot when a calendar is shown, or rendered in the empty state — opens a `calDrawer` holding `calCalendarPicker`. |
 | `calCalendarPicker` | Grouped "My / Shared" checkbox list to choose which calendar definitions to display; emits `calendarselectionchange` / `primarychange`. |
 | `calWorkspaceCore` | Pure module: `mergeColorRules`, `mergeFieldConfig`, `resolveDisplayConfig`, `toGenericEvents`. |
 

@@ -1,6 +1,6 @@
 <template>
     <div class="workspace">
-        <aside class="workspace__sidebar">
+        <c-cal-drawer label="My calendars" open={settingsOpen} onclose={closeSettings}>
             <c-cal-calendar-picker
                 calendars={availableCalendars}
                 selected-ids={selectedIds}
@@ -8,7 +8,8 @@
                 oncalendarselectionchange={handleSelectionChange}
                 onprimarychange={handlePrimaryChange}
             ></c-cal-calendar-picker>
-        </aside>
+        </c-cal-drawer>
+
         <div class="workspace__main">
             <template if:true={truncated}>
                 <p class="workspace__notice">
@@ -35,10 +36,29 @@
                     onviewchange={handleViewChange}
                     onlayoutchange={handleLayoutChange}
                     oncalendarvisibilitychange={handleVisibilityChange}
-                ></c-cal-calendar>
+                >
+                    <lightning-button-icon
+                        slot="toolbar-end"
+                        class="workspace__settings"
+                        icon-name="utility:settings"
+                        alternative-text="Choose calendars"
+                        title="Choose calendars"
+                        variant="border-filled"
+                        onclick={openSettings}
+                    ></lightning-button-icon>
+                </c-cal-calendar>
             </template>
             <template if:false={hasSelection}>
-                <p class="workspace__empty">Pick a calendar from the list to get started.</p>
+                <div class="workspace__empty">
+                    <lightning-button
+                        class="workspace__settings"
+                        label="Choose calendars"
+                        icon-name="utility:settings"
+                        variant="brand"
+                        onclick={openSettings}
+                    ></lightning-button>
+                    <p class="workspace__empty-text">Pick a calendar to get started.</p>
+                </div>
             </template>
         </div>
     </div>

@@ -1,15 +1,18 @@
 <template>
     <div class="calendar">
-        <c-cal-toolbar
-            title={title}
-            view={view}
-            layout={layout}
-            can-toggle-layout={canToggleLayout}
-            ontoday={handleToday}
-            onnavigate={handleNavigate}
-            onviewchange={handleViewChange}
-            onlayoutchange={handleLayoutChange}
-        ></c-cal-toolbar>
+        <div class="calendar__header">
+            <c-cal-toolbar
+                title={title}
+                view={view}
+                layout={layout}
+                can-toggle-layout={canToggleLayout}
+                ontoday={handleToday}
+                onnavigate={handleNavigate}
+                onviewchange={handleViewChange}
+                onlayoutchange={handleLayoutChange}
+            ></c-cal-toolbar>
+            <slot name="toolbar-end"></slot>
+        </div>
 
         <div class={bodyClass}>
             <template if:true={showSidebar}>

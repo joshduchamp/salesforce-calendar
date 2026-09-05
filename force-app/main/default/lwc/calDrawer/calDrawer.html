@@ -1,0 +1,22 @@
+<template>
+    <template if:true={open}>
+        <div class="drawer">
+            <div class="drawer__backdrop" onclick={emitClose}></div>
+            <aside class={panelClass} role="dialog" aria-label={label}>
+                <header class="drawer__header">
+                    <h2 class="drawer__title slds-text-title_caps">{label}</h2>
+                    <lightning-button-icon
+                        icon-name="utility:close"
+                        alternative-text="Close"
+                        title="Close"
+                        variant="bare"
+                        onclick={emitClose}
+                    ></lightning-button-icon>
+                </header>
+                <div class="drawer__body">
+                    <slot></slot>
+                </div>
+            </aside>
+        </div>
+    </template>
+</template>

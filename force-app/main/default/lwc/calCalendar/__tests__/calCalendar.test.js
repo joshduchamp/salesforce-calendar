@@ -50,6 +50,15 @@ describe('c-cal-calendar', () => {
         expect(element.shadowRoot.querySelector('c-cal-toolbar')).not.toBeNull();
     });
 
+    it('exposes a toolbar-end slot in the calendar header', async () => {
+        const element = setup({ events: eventsAround() });
+        await flush();
+        expect(element.shadowRoot.querySelector('slot[name="toolbar-end"]')).not.toBeNull();
+        expect(
+            element.shadowRoot.querySelector('.calendar__header c-cal-toolbar')
+        ).not.toBeNull();
+    });
+
     it('emits rangechange on first render', async () => {
         const handler = jest.fn();
         const element = createElement('c-cal-calendar', { is: CalCalendar });

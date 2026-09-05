@@ -51,6 +51,14 @@ async function load(workspace = WORKSPACE) {
     return element;
 }
 
+async function openSettings(element) {
+    element.shadowRoot
+        .querySelector('.workspace__settings')
+        .dispatchEvent(new CustomEvent('click'));
+    await flush();
+    return element.shadowRoot.querySelector('c-cal-calendar-picker');
+}
+
 beforeEach(() => {
     jest.useFakeTimers();
 });
@@ -69,8 +77,44 @@ describe('c-cal-workspace', () => {
         expect(getWorkspace.mock.calls[0]).toEqual([]);
     });
 
+    it('keeps the settings drawer closed until the gear button is clicked', async () => {
+        const element = await load();
+        const drawer = element.shadowRoot.querySelector('c-cal-drawer');
+        expect(drawer).not.toBeNull();
+        expect(drawer.open).toBe(false);
+        await openSettings(element);
+        expect(drawer.open).toBe(true);
+    });
+
+    it('closes the drawer when it emits close', async () => {
+        const element = await load();
+        const drawer = element.shadowRoot.querySelector('c-cal-drawer');
+        await openSettings(element);
+        drawer.dispatchEvent(new CustomEvent('close'));
+        await flush();
+        expect(drawer.open).toBe(false);
+    });
+
+    it('mounts the settings control into the calendar toolbar-end slot', async () => {
+        const element = await load();
+        const gear = element.shadowRoot.querySelector('.workspace__settings');
+        expect(gear.getAttribute('slot')).toBe('toolbar-end');
+        expect(gear.closest('c-cal-calendar')).not.toBeNull();
+    });
+
+    it('auto-opens the picker on first load when nothing is selected', async () => {
+        const element = await load({
+            ...WORKSPACE,
+            preferences: { selectedCalendarIds: [], displayConfig: {} }
+        });
+        expect(element.shadowRoot.querySelector('c-cal-calendar')).toBeNull();
+        expect(element.shadowRoot.querySelector('c-cal-drawer').open).toBe(true);
+        expect(element.shadowRoot.querySelector('.workspace__settings')).not.toBeNull();
+    });
+
     it('renders the picker and calendar with the loaded preferences', async () => {
         const element = await load();
+        await openSettings(element);
         expect(element.shadowRoot.querySelector('c-cal-calendar-picker')).not.toBeNull();
         const calendar = element.shadowRoot.querySelector('c-cal-calendar');
         expect(calendar).not.toBeNull();
@@ -91,7 +135,7 @@ describe('c-cal-workspace', () => {
         const calendar = element.shadowRoot.querySelector('c-cal-calendar');
         calendar.dispatchEvent(new CustomEvent('viewchange', { detail: { view: 'day' } }));
         calendar.dispatchEvent(new CustomEvent('layoutchange', { detail: { layout: 'condensed' } }));
-        const picker = element.shadowRoot.querySelector('c-cal-calendar-picker');
+        const picker = await openSettings(element);
         picker.dispatchEvent(new CustomEvent('primarychange', { detail: { primaryId: 'a' } }));
 
         jest.advanceTimersByTime(999);
@@ -112,7 +156,7 @@ describe('c-cal-workspace', () => {
             ...WORKSPACE,
             preferences: { selectedCalendarIds: [], displayConfig: {} }
         });
-        const picker = element.shadowRoot.querySelector('c-cal-calendar-picker');
+        const picker = await openSettings(element);
         picker.dispatchEvent(
             new CustomEvent('calendarselectionchange', { detail: { selectedIds: ['a'] } })
         );
@@ -136,7 +180,7 @@ describe('c-cal-workspace', () => {
             ...WORKSPACE,
             preferences: { selectedCalendarIds: [], displayConfig: {} }
         });
-        const picker = element.shadowRoot.querySelector('c-cal-calendar-picker');
+        const picker = await openSettings(element);
         picker.dispatchEvent(
             new CustomEvent('calendarselectionchange', { detail: { selectedIds: ['a'] } })
         );

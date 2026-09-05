@@ -12,6 +12,26 @@
     border-radius: 0.25rem;
 }
 
+.calendar__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* Match the view's horizontal inset so the slotted control's right edge
+       lines up with the grid below it. */
+    padding-right: 0.5rem;
+}
+
+/* An unfilled named slot must not create a box or a flex item. */
+.calendar__header slot {
+    display: contents;
+}
+
+.calendar__header c-cal-toolbar {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
 .calendar__body {
     display: flex;
     flex: 1;

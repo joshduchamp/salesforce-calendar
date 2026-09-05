@@ -40,8 +40,6 @@ export default class CalCalendarPicker extends LightningElement {
     handleToggle(event) {
         const { id } = event.target.dataset;
         const checked = event.target.checked;
-        // eslint-disable-next-line no-console
-        console.log('[calWS] picker.handleToggle', id, 'checked=', checked, 'currentSel=', JSON.stringify(this.selectedIds));
         const next = new Set(this.selectedIds || []);
         if (checked) {
             next.add(id);

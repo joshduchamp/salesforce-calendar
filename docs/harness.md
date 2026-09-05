@@ -153,8 +153,9 @@ back to a visited range does not re-enter Apex.
 
 | Component | Responsibility |
 | --- | --- |
-| `c-cal-workspace` | The only data-aware calendar component. Wires `getWorkspace`, refetches on `rangechange` (debounced, out-of-order-safe), merges N calendars into one `c-cal-calendar` prop set, persists preferences. Targets App / Home pages. |
-| `c-cal-calendar-picker` | Presentational. Grouped "My / Shared" checkbox list to choose which calendars to display; emits `calendarselectionchange` / `primarychange`. Distinct from the in-calendar `calSourceList`, which only show/hides already-loaded calendars. |
+| `c-cal-workspace` | The only data-aware calendar component. Wires `getWorkspace`, refetches on `rangechange` (debounced, out-of-order-safe), merges N calendars into one `c-cal-calendar` prop set, persists preferences. Targets App / Home pages. A settings control in the calendar's `toolbar-end` slot (or in the empty state) opens a `c-cal-drawer` holding the picker. |
+| `c-cal-calendar-picker` | Presentational. Grouped "My / Shared" checkbox list to choose which calendars to display; emits `calendarselectionchange` / `primarychange`. Distinct from the in-calendar `calSourceList`, which only show/hides already-loaded calendars. Lives inside the workspace drawer, so calendar-subscription choice stays off the main layout — the in-calendar sidebar keeps only the per-view visibility toggles + legend. |
+| `c-cal-drawer` | Generic presentational slide-out panel — see [components.md](components.md). Not harness-specific; the workspace just composes it. |
 | `c/calWorkspaceCore` | Pure module: `mergeColorRules`, `mergeFieldConfig`, `resolveDisplayConfig`, `toGenericEvents`. |
 
 Merge precedence for display settings: **user preference, else the

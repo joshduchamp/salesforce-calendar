@@ -46,6 +46,7 @@ export default class CalWorkspace extends LightningElement {
     _ready = false;
     _saveTimer;
     _didLoad = false;
+    _settingsOpen = false;
 
     connectedCallback() {
         // connectedCallback can fire more than once (Lightning re-parents the
@@ -84,6 +85,13 @@ export default class CalWorkspace extends LightningElement {
                 this._primaryId = prefs.primaryCalendarId || this._selectedIds[0];
                 this._display = resolveDisplayConfig(prefs);
                 this._ready = true;
+                // First run with nothing selected: open the picker so the user
+                // isn't stranded on an empty calendar. loadWorkspace() runs once
+                // (the _didLoad guard), so closing the drawer sticks — the
+                // empty-state button is the way back in.
+                if (!this.hasSelection) {
+                    this._settingsOpen = true;
+                }
                 this.runFetch();
             })
             .catch((error) => {
@@ -228,6 +236,19 @@ export default class CalWorkspace extends LightningElement {
 
     get locale() {
         return this._display.locale || undefined;
+    }
+
+    // ---- Settings drawer ---------------------------------------------------
+    get settingsOpen() {
+        return this._settingsOpen;
+    }
+
+    openSettings() {
+        this._settingsOpen = true;
+    }
+
+    closeSettings() {
+        this._settingsOpen = false;
     }
 
     // ---- Event handlers ------------------------------------------------
