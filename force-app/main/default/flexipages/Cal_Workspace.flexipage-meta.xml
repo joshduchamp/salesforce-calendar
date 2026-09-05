@@ -3,7 +3,7 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>c:calWorkspace</componentName>
+                <componentName>calWorkspace</componentName>
                 <identifier>calWorkspaceComponent</identifier>
             </componentInstance>
         </itemInstances>

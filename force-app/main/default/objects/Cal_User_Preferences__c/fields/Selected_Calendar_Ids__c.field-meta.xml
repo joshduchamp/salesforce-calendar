@@ -2,10 +2,8 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Selected_Calendar_Ids__c</fullName>
     <description>JSON array of Cal_Calendar__c Ids the user currently displays.</description>
-    <externalId>false</externalId>
     <label>Selected Calendar Ids (JSON)</label>
     <length>32768</length>
-    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>LongTextArea</type>
     <visibleLines>4</visibleLines>

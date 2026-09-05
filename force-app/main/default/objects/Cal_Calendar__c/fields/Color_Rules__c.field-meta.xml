@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Color_Rules__c</fullName>
-    <description>JSON color-rules object: {"rules":[{"key","operator","value","color","label"}],"defaultColor"}. Each rule key must match a Field Config key.</description>
-    <externalId>false</externalId>
+    <description>JSON color-rules object: {&quot;rules&quot;:[{&quot;key&quot;,&quot;operator&quot;,&quot;value&quot;,&quot;color&quot;,&quot;label&quot;}],&quot;defaultColor&quot;}. Each rule key must match a Field Config key.</description>
     <label>Color Rules (JSON)</label>
     <length>5000</length>
-    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>LongTextArea</type>
     <visibleLines>10</visibleLines>

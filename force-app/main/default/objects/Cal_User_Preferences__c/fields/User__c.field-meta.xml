@@ -3,7 +3,6 @@
     <fullName>User__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <description>The user these preferences belong to. Always set to the running user by CalUserPreferencesDomain; the trigger rejects any other value.</description>
-    <externalId>false</externalId>
     <label>User</label>
     <referenceTo>User</referenceTo>
     <relationshipLabel>Calendar Preferences</relationshipLabel>

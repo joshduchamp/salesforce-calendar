@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Field_Config__c</fullName>
-    <description>JSON array of extra fields to show on events. Each entry: {"key","source","label","showLabel","views","truncate"}. "source" is the field API name to query (dot paths allowed); defaults to "key".</description>
-    <externalId>false</externalId>
+    <description>JSON array of extra fields to show on events. Each entry: {&quot;key&quot;,&quot;source&quot;,&quot;label&quot;,&quot;showLabel&quot;,&quot;views&quot;,&quot;truncate&quot;}. &quot;source&quot; is the field API name to query (dot paths allowed); defaults to &quot;key&quot;.</description>
     <label>Field Config (JSON)</label>
     <length>5000</length>
-    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>LongTextArea</type>
     <visibleLines>10</visibleLines>

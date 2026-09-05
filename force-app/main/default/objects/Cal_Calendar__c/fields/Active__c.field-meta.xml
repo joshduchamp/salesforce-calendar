@@ -3,7 +3,6 @@
     <fullName>Active__c</fullName>
     <defaultValue>true</defaultValue>
     <description>Inactive calendars are never queried and are hidden from the picker.</description>
-    <externalId>false</externalId>
     <label>Active</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

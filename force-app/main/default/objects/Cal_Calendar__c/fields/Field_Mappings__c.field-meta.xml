@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Field_Mappings__c</fullName>
-    <description>JSON mapping base event fields to source field API names: {"title","start","end","allDay","recordId"}. title and start are required.</description>
-    <externalId>false</externalId>
+    <description>JSON mapping base event fields to source field API names: {&quot;title&quot;,&quot;start&quot;,&quot;end&quot;,&quot;allDay&quot;,&quot;recordId&quot;}. title and start are required.</description>
     <label>Field Mappings (JSON)</label>
     <length>2000</length>
     <trackTrending>false</trackTrending>

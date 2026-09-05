@@ -3,7 +3,6 @@
     <fullName>Primary_Calendar__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <description>Supplies the merged colorRules.defaultColor and sits first in the color-rule / field-config merge order.</description>
-    <externalId>false</externalId>
     <label>Primary Calendar</label>
     <referenceTo>Cal_Calendar__c</referenceTo>
     <relationshipLabel>User Preferences (Primary)</relationshipLabel>

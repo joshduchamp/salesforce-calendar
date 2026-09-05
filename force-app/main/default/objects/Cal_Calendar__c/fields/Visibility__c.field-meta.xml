@@ -2,7 +2,6 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Visibility__c</fullName>
     <description>Public calendars are shared with all internal users by a sharing rule. Private calendars stay with their owner.</description>
-    <externalId>false</externalId>
     <label>Visibility</label>
     <required>true</required>
     <trackTrending>false</trackTrending>

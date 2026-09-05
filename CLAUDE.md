@@ -64,3 +64,7 @@ service module and is unit-tested directly.
 - `sf apex run test -l RunLocalTests` — Apex tests. Needs the `Calendar_Admin`
   permission set assigned to the running user (this scratch org enforces FLS on
   Apex DML): `sf org assign permset -n Calendar_Admin`.
+
+## Development Standards
+
+- No newline for last character in files. 

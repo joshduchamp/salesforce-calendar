@@ -13,5 +13,6 @@
             <operation>equals</operation>
             <value>Public</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
 </SharingRules>
