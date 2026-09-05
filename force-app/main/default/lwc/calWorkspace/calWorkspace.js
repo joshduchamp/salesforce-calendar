@@ -11,6 +11,7 @@ import {
 } from 'c/calWorkspaceCore';
 
 const FETCH_DEBOUNCE_MS = 200;
+const SAVE_DEBOUNCE_MS = 1000;
 
 function parseJson(raw, fallback) {
     if (!raw) {
@@ -29,8 +30,7 @@ function parseJson(raw, fallback) {
  * pick which to display, refetches records as the visible range changes, and
  * maps them to the generic event shape for `c/calCalendar`.
  *
- * Preferences are persisted only when the user clicks "Save view" — no
- * autosave.
+ * Preference changes (selection / primary / view / layout) autosave, debounced.
  */
 export default class CalWorkspace extends LightningElement {
     _calendars = [];
@@ -44,9 +44,7 @@ export default class CalWorkspace extends LightningElement {
     _fetchSeq = 0;
     _fetchTimer;
     _ready = false;
-    _dirty = false;
-    _saving = false;
-    _justSaved = false;
+    _saveTimer;
     _didLoad = false;
 
     connectedCallback() {
@@ -61,6 +59,13 @@ export default class CalWorkspace extends LightningElement {
 
     disconnectedCallback() {
         clearTimeout(this._fetchTimer);
+        // Flush a pending autosave so a change made just before navigating away
+        // is not lost.
+        if (this._saveTimer) {
+            clearTimeout(this._saveTimer);
+            this._saveTimer = undefined;
+            this.savePrefs();
+        }
     }
 
     loadWorkspace() {
@@ -87,29 +92,19 @@ export default class CalWorkspace extends LightningElement {
     }
 
     // ---- Save --------------------------------------------------------------
-    get canSave() {
-        return this._ready && this._dirty && !this._saving;
+    scheduleSave() {
+        clearTimeout(this._saveTimer);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this._saveTimer = setTimeout(() => {
+            this._saveTimer = undefined;
+            this.savePrefs();
+        }, SAVE_DEBOUNCE_MS);
     }
 
-    get saveDisabled() {
-        return !this.canSave;
-    }
-
-    get saveLabel() {
-        if (this._saving) {
-            return 'Saving…';
-        }
-        if (this._justSaved && !this._dirty) {
-            return 'Preferences saved';
-        }
-        return 'Save preferences';
-    }
-
-    handleSave() {
-        if (!this.canSave) {
+    savePrefs() {
+        if (!this._ready) {
             return;
         }
-        this._saving = true;
         const payload = {
             selectedCalendarIds: this._selectedIds,
             primaryCalendarId: this._primaryId,
@@ -124,18 +119,11 @@ export default class CalWorkspace extends LightningElement {
             showLegendCounts: this._display.showLegendCounts,
             locale: this._display.locale
         };
-        savePreferences({ prefsJson: JSON.stringify(payload) })
-            .then(() => {
-                // Keep exactly what the user chose — do not reconcile from the
-                // response. A later loadWorkspace() reconciles on the next open.
-                this._dirty = false;
-                this._justSaved = true;
-                this._saving = false;
-            })
-            .catch((error) => {
-                this._error = error;
-                this._saving = false;
-            });
+        // Keep exactly what the user chose — do not reconcile from the response.
+        // A later loadWorkspace() reconciles on the next open.
+        savePreferences({ prefsJson: JSON.stringify(payload) }).catch((error) => {
+            this._error = error;
+        });
     }
 
     // ---- Data for c/calCalendar ------------------------------------------
@@ -250,12 +238,12 @@ export default class CalWorkspace extends LightningElement {
 
     handleViewChange(event) {
         this._display = { ...this._display, view: event.detail.view };
-        this.markDirty();
+        this.scheduleSave();
     }
 
     handleLayoutChange(event) {
         this._display = { ...this._display, layout: event.detail.layout };
-        this.markDirty();
+        this.scheduleSave();
     }
 
     handleVisibilityChange(event) {
@@ -271,18 +259,13 @@ export default class CalWorkspace extends LightningElement {
         if (!this._primaryId && this._selectedIds.length) {
             this._primaryId = this._selectedIds[0];
         }
-        this.markDirty();
+        this.scheduleSave();
         this.scheduleFetch();
     }
 
     handlePrimaryChange(event) {
         this._primaryId = event.detail.primaryId;
-        this.markDirty();
-    }
-
-    markDirty() {
-        this._dirty = true;
-        this._justSaved = false;
+        this.scheduleSave();
     }
 
     // ---- Fetch --------------------------------------------------------

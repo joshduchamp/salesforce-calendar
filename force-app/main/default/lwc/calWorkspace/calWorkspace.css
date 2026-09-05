@@ -15,26 +15,6 @@
     border-radius: 0.25rem;
 }
 
-.workspace__save {
-    margin-top: 0.75rem;
-    width: 100%;
-    padding: 0.5rem 0.75rem;
-    font: inherit;
-    font-size: 0.8125rem;
-    color: #ffffff;
-    background: #0176d3;
-    border: 1px solid #0176d3;
-    border-radius: 0.25rem;
-    cursor: pointer;
-}
-
-.workspace__save:disabled {
-    color: #706e6b;
-    background: #e5e5e5;
-    border-color: #e5e5e5;
-    cursor: default;
-}
-
 .workspace__main {
     flex: 1 1 auto;
     min-width: 0;

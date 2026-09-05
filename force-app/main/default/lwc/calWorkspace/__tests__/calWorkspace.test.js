@@ -51,8 +51,6 @@ async function load(workspace = WORKSPACE) {
     return element;
 }
 
-const saveButton = (element) => element.shadowRoot.querySelector('.workspace__save');
-
 beforeEach(() => {
     jest.useFakeTimers();
 });
@@ -88,17 +86,28 @@ describe('c-cal-workspace', () => {
         expect(getWorkspace).toHaveBeenCalledTimes(1);
     });
 
-    it('never autosaves — changing the view does not call savePreferences', async () => {
+    it('autosaves preference changes once, debounced', async () => {
         const element = await load();
         const calendar = element.shadowRoot.querySelector('c-cal-calendar');
         calendar.dispatchEvent(new CustomEvent('viewchange', { detail: { view: 'day' } }));
         calendar.dispatchEvent(new CustomEvent('layoutchange', { detail: { layout: 'condensed' } }));
-        jest.advanceTimersByTime(5000);
-        await flush();
+        const picker = element.shadowRoot.querySelector('c-cal-calendar-picker');
+        picker.dispatchEvent(new CustomEvent('primarychange', { detail: { primaryId: 'a' } }));
+
+        jest.advanceTimersByTime(999);
         expect(savePreferences).not.toHaveBeenCalled();
+
+        jest.advanceTimersByTime(1);
+        await flush();
+
+        expect(savePreferences).toHaveBeenCalledTimes(1);
+        const sent = JSON.parse(savePreferences.mock.calls[0][0].prefsJson);
+        expect(sent.primaryCalendarId).toBe('a');
+        expect(sent.view).toBe('day');
+        expect(sent.layout).toBe('condensed');
     });
 
-    it('does not save on selection change, and does not save on teardown', async () => {
+    it('autosaves a selection change, and flushes a pending save on teardown', async () => {
         const element = await load({
             ...WORKSPACE,
             preferences: { selectedCalendarIds: [], displayConfig: {} }
@@ -108,33 +117,17 @@ describe('c-cal-workspace', () => {
             new CustomEvent('calendarselectionchange', { detail: { selectedIds: ['a'] } })
         );
         await flush();
-        document.body.removeChild(element);
+
+        // change is still within the debounce window
         expect(savePreferences).not.toHaveBeenCalled();
-    });
 
-    it('save button is disabled until a change is made, then persists on click', async () => {
-        const element = await load();
-        expect(saveButton(element).disabled).toBe(true);
-
-        const calendar = element.shadowRoot.querySelector('c-cal-calendar');
-        calendar.dispatchEvent(new CustomEvent('viewchange', { detail: { view: 'day' } }));
-        const picker = element.shadowRoot.querySelector('c-cal-calendar-picker');
-        picker.dispatchEvent(new CustomEvent('primarychange', { detail: { primaryId: 'a' } }));
-        await flush();
-        expect(saveButton(element).disabled).toBe(false);
-
-        saveButton(element).click();
+        document.body.removeChild(element);
         await flush();
 
         expect(savePreferences).toHaveBeenCalledTimes(1);
-        const sent = JSON.parse(savePreferences.mock.calls[0][0].prefsJson);
-        expect(sent.selectedCalendarIds).toEqual(['a']);
-        expect(sent.primaryCalendarId).toBe('a');
-        expect(sent.view).toBe('day');
-
-        await flush();
-        expect(saveButton(element).disabled).toBe(true);
-        expect(saveButton(element).textContent.trim()).toBe('Preferences saved');
+        expect(JSON.parse(savePreferences.mock.calls[0][0].prefsJson).selectedCalendarIds).toEqual([
+            'a'
+        ]);
     });
 
     it('keeps the selection the user chose even if the save response is empty', async () => {
@@ -147,9 +140,7 @@ describe('c-cal-workspace', () => {
         picker.dispatchEvent(
             new CustomEvent('calendarselectionchange', { detail: { selectedIds: ['a'] } })
         );
-        await flush();
-
-        saveButton(element).click();
+        jest.advanceTimersByTime(1000);
         await flush();
 
         // the calendar must still be selected/rendered

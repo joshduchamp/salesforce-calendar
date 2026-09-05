@@ -8,14 +8,6 @@
                 oncalendarselectionchange={handleSelectionChange}
                 onprimarychange={handlePrimaryChange}
             ></c-cal-calendar-picker>
-            <button
-                type="button"
-                class="workspace__save"
-                onclick={handleSave}
-                disabled={saveDisabled}
-            >
-                {saveLabel}
-            </button>
         </aside>
         <div class="workspace__main">
             <template if:true={truncated}>
