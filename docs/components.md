@@ -124,6 +124,7 @@ the object model and Apex. Its LWCs:
 | `calWorkspace` | Public entry point for the harness (App / Home page). The only data-aware calendar component: loads calendar definitions + user preferences via Apex, refetches records on `rangechange`, merges N calendars into one `calCalendar` prop set, persists preferences. A settings control — projected into `calCalendar`'s `toolbar-end` slot when a calendar is shown, or rendered in the empty state — opens a `calDrawer` holding `calCalendarPicker`. |
 | `calCalendarPicker` | Grouped "My / Shared" checkbox list to choose which calendar definitions to display; emits `calendarselectionchange` / `primarychange`. |
 | `calFieldMapping` | Admin helper on the `Cal_Calendar__c` record page: maps the base event fields to Target Object fields and writes `Field_Mappings__c`. Not on the runtime data path. |
+| `calFieldConfig` | Admin helper on the `Cal_Calendar__c` record page: a read-only summary of the extra event fields in `Field_Config__c`, with a pencil that opens an ordered add/remove/reorder editor. Not on the runtime data path. |
 | `calWorkspaceCore` | Pure module: `mergeColorRules`, `mergeFieldConfig`, `resolveDisplayConfig`, `toGenericEvents`. |
 
 ## Demo

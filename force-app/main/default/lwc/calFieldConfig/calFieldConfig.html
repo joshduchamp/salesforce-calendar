@@ -1,0 +1,235 @@
+<template>
+    <lightning-card title="Field Configuration" icon-name="utility:display_text">
+        <template if:true={showEditButton}>
+            <lightning-button-icon
+                slot="actions"
+                class="edit-toggle"
+                icon-name="utility:edit"
+                alternative-text="Edit field configuration"
+                onclick={handleEdit}
+            ></lightning-button-icon>
+        </template>
+
+        <div class="body">
+            <template if:true={recordError}>
+                <p class="error">{recordError}</p>
+            </template>
+
+            <template if:false={hasTargetObject}>
+                <p class="hint">
+                    Set <strong>Target Object</strong> on this calendar and save the record, then
+                    configure the fields to show on events here.
+                </p>
+            </template>
+
+            <template if:true={hasTargetObject}>
+                <template if:true={objectInfoError}>
+                    <p class="error">{objectInfoError}</p>
+                </template>
+
+                <!-- Read view (default): condensed summary -->
+                <template if:false={isEdit}>
+                    <template if:false={hasRows}>
+                        <p class="empty">
+                            No extra fields configured. Events show title and time only.
+                        </p>
+                    </template>
+                    <template if:true={hasRows}>
+                        <table class="summary">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Field</th>
+                                    <th>Label</th>
+                                    <th>Views</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={summaryRows} for:item="row">
+                                    <tr key={row.id}>
+                                        <td>{row.name}</td>
+                                        <td>{row.from}</td>
+                                        <td>{row.label}</td>
+                                        <td>{row.views}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </template>
+
+                <!-- Edit view: full editor -->
+                <template if:true={isEdit}>
+                    <p class="hint">
+                        Each entry shows one extra piece of information on every event on this
+                        calendar, below the title and time.
+                    </p>
+
+                    <template if:false={hasRows}>
+                        <p class="empty">No fields configured yet.</p>
+                    </template>
+
+                    <template for:each={displayRows} for:item="row">
+                        <div key={row.id} class="entry">
+                            <div class="entry-head">
+                                <span class="entry-title">Field {row.position}</span>
+                                <div class="entry-actions">
+                                    <lightning-button-icon
+                                        icon-name="utility:up"
+                                        alternative-text="Move up"
+                                        size="x-small"
+                                        data-id={row.id}
+                                        data-act="up"
+                                        disabled={row.isFirst}
+                                        onclick={handleRowAction}
+                                    ></lightning-button-icon>
+                                    <lightning-button-icon
+                                        icon-name="utility:down"
+                                        alternative-text="Move down"
+                                        size="x-small"
+                                        data-id={row.id}
+                                        data-act="down"
+                                        disabled={row.isLast}
+                                        onclick={handleRowAction}
+                                    ></lightning-button-icon>
+                                    <lightning-button-icon
+                                        icon-name="utility:delete"
+                                        alternative-text="Remove"
+                                        size="x-small"
+                                        data-id={row.id}
+                                        data-act="remove"
+                                        onclick={handleRowAction}
+                                    ></lightning-button-icon>
+                                </div>
+                            </div>
+
+                            <lightning-input
+                                class="row"
+                                data-id={row.id}
+                                data-prop="key"
+                                label="Name"
+                                required
+                                value={row.key}
+                                onchange={handleChange}
+                                field-level-help="A short name for this piece of information, e.g. location. Must be unique. Color rules refer to events by this name."
+                            ></lightning-input>
+
+                            <template if:true={row.usePicker}>
+                                <lightning-combobox
+                                    class="row"
+                                    data-id={row.id}
+                                    data-prop="source"
+                                    label="Source field"
+                                    placeholder="Same as the name"
+                                    value={row.source}
+                                    options={row.sourceOptions}
+                                    onchange={handleChange}
+                                    field-level-help="The field on the target record to read this value from. Leave blank to use a field matching the name."
+                                ></lightning-combobox>
+                            </template>
+                            <template if:false={row.usePicker}>
+                                <lightning-input
+                                    class="row"
+                                    data-id={row.id}
+                                    data-prop="source"
+                                    label="Source lookup path"
+                                    placeholder="Owner.Name"
+                                    value={row.source}
+                                    onchange={handleChange}
+                                    field-level-help="Dotted path across lookups, up to 5 levels (Account.Owner.Name)."
+                                ></lightning-input>
+                            </template>
+
+                            <lightning-input
+                                class="row indent"
+                                type="checkbox"
+                                data-id={row.id}
+                                data-prop="customPath"
+                                label="Custom lookup path"
+                                checked={row.customPath}
+                                onchange={handleChange}
+                            ></lightning-input>
+
+                            <lightning-input
+                                class="row"
+                                data-id={row.id}
+                                data-prop="label"
+                                label="Label"
+                                placeholder="Defaults to the source field's label"
+                                value={row.label}
+                                onchange={handleChange}
+                                field-level-help="Heading shown before the value on the event."
+                            ></lightning-input>
+
+                            <lightning-input
+                                class="row"
+                                type="toggle"
+                                data-id={row.id}
+                                data-prop="showLabel"
+                                label="Show label on the event"
+                                checked={row.showLabel}
+                                onchange={handleChange}
+                            ></lightning-input>
+
+                            <lightning-input
+                                class="row"
+                                type="number"
+                                min="1"
+                                step="1"
+                                data-id={row.id}
+                                data-prop="truncate"
+                                label="Truncate at (characters)"
+                                placeholder="No limit"
+                                value={row.truncate}
+                                onchange={handleChange}
+                            ></lightning-input>
+
+                            <lightning-checkbox-group
+                                class="row"
+                                data-id={row.id}
+                                data-prop="views"
+                                label="Show in views"
+                                options={viewOptions}
+                                value={row.viewsValue}
+                                onchange={handleChange}
+                                field-level-help="Leave all checked to show the field everywhere."
+                            ></lightning-checkbox-group>
+                        </div>
+                    </template>
+
+                    <lightning-button
+                        class="add"
+                        label="Add field"
+                        icon-name="utility:add"
+                        onclick={handleAdd}
+                    ></lightning-button>
+
+                    <template if:true={showProblems}>
+                        <ul class="problems">
+                            <template for:each={problems} for:item="problem">
+                                <li key={problem} class="error">{problem}</li>
+                            </template>
+                        </ul>
+                    </template>
+                </template>
+            </template>
+        </div>
+
+        <template if:true={isEdit}>
+            <div slot="footer" class="footer">
+                <lightning-button
+                    class="cancel"
+                    label="Cancel"
+                    onclick={handleCancel}
+                ></lightning-button>
+                <lightning-button
+                    class="save"
+                    label="Save"
+                    variant="brand"
+                    disabled={saveDisabled}
+                    onclick={handleSave}
+                ></lightning-button>
+            </div>
+        </template>
+    </lightning-card>
+</template>

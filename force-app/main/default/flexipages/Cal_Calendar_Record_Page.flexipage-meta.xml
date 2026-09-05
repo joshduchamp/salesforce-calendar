@@ -113,16 +113,6 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Field_Config__c</fieldItem>
-                <identifier>RecordField_Config_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
                 <fieldItem>Record.Color_Rules__c</fieldItem>
                 <identifier>RecordColor_Rules_cField</identifier>
             </fieldInstance>
@@ -269,6 +259,12 @@
             <componentInstance>
                 <componentName>c:calFieldMapping</componentName>
                 <identifier>calFieldMappingComponent</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:calFieldConfig</componentName>
+                <identifier>calFieldConfigComponent</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>

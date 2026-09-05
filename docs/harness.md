@@ -78,6 +78,14 @@ name to `SELECT`; defaults to `key`). Dotted lookup paths are allowed on
 
 Each `key` becomes a key in the event's `meta` bag.
 
+On the record page this field is edited through the **Field Configuration**
+component (`c-cal-field-mapping`'s sibling, `c-cal-field-config`). It opens as a
+condensed read-only summary table; a header pencil expands the full editor — an
+ordered, add/remove/reorder list of entries, each with the source field, label,
+label visibility, truncation, and the views it shows in — with Cancel / Save. The
+raw JSON is still valid input — add the field to the layout or set it through the
+API to bypass the component.
+
 ### `Color_Rules__c`
 
 ```json
@@ -163,6 +171,7 @@ back to a visited range does not re-enter Apex.
 | `c-cal-calendar-picker` | Presentational. Grouped "My / Shared" checkbox list to choose which calendars to display; emits `calendarselectionchange` / `primarychange`. Distinct from the in-calendar `calSourceList`, which only show/hides already-loaded calendars. Lives inside the workspace drawer, so calendar-subscription choice stays off the main layout — the in-calendar sidebar keeps only the per-view visibility toggles + legend. |
 | `c-cal-drawer` | Generic presentational slide-out panel — see [components.md](components.md). Not harness-specific; the workspace just composes it. |
 | `c-cal-field-mapping` | Record-page helper for `Cal_Calendar__c`. Guided editor for `Field_Mappings__c`: picks each base event field from the Target Object's fields and writes the JSON on Save. Not part of the runtime data path. |
+| `c-cal-field-config` | Record-page helper for `Cal_Calendar__c`. Read-only summary of `Field_Config__c` (the ordered extra fields shown on events); a pencil opens the guided add/remove/reorder editor. Not part of the runtime data path. |
 | `c/calWorkspaceCore` | Pure module: `mergeColorRules`, `mergeFieldConfig`, `resolveDisplayConfig`, `toGenericEvents`. |
 
 Merge precedence for display settings: **user preference, else the
