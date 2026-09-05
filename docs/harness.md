@@ -22,11 +22,11 @@ own private calendars plus all public ones.
 A **Calendar Record Page** Lightning page (`Cal_Calendar_Record_Page`) is assigned
 for the object inside the Calendar app; to use it everywhere, activate it as the
 org default in App Builder (Setup → Object Manager → Calendar → Lightning Record
-Pages). It shows the plain fields (Filter Criteria included) in one **Calendar**
-section, then the three guided editors — Field Mapping, Field Configuration, Color
-Rules — each of which owns its JSON field. The classic **Calendar Layout** page
-layout still exposes `Field_Mappings__c` / `Field_Config__c` / `Color_Rules__c` as
-raw JSON fields, the documented way to bypass the components.
+Pages). It shows the plain fields in one **Calendar** section, then the four
+guided editors — Field Mapping, Field Configuration, Color Rules, Filter Criteria
+— each of which owns its field. The classic **Calendar Layout** page layout still
+exposes `Field_Mappings__c` / `Field_Config__c` / `Color_Rules__c` /
+`Filter_Criteria__c` as raw fields, the documented way to bypass the components.
 
 | Field | Purpose |
 | --- | --- |
@@ -129,6 +129,15 @@ Example: `OwnerId = $CURRENT_USER_ID AND ShowAs = 'Busy'`.
 The fragment is trial-compiled on save; `;` and comments are rejected. Only
 `Calendar_Admin` can edit it.
 
+On the record page this field is edited through the **Filter Criteria** component
+(`c-cal-filter-criteria`). It opens as a read-only view of the stored fragment; a
+header pencil expands a textarea with the placeholder reference, a searchable list
+of the Target Object's fields, and a **Check syntax** button that trial-compiles
+the fragment server-side (`CalFilterController.checkFilter`) before Save. The raw
+field is still valid input — add it to the layout or set it through the API to
+bypass the component. The expansion and trial-compile rules are shared with the
+save-time validation and the runtime query via `CalFilterCompiler`.
+
 ### Save-time validation
 
 `CalCalendarTrigger` rejects a record whose JSON is malformed, whose target
@@ -148,10 +157,12 @@ focused date is not persisted — the workspace always opens on today.
 | Class | Layer | Responsibility |
 | --- | --- | --- |
 | `CalWorkspaceController` | controller | `getWorkspace()`, `getEvents()`, `savePreferences()` — marshalling only. |
+| `CalFilterController` | controller | `checkFilter()` — trial-compiles a candidate `Filter_Criteria__c` fragment for the record-page helper. Marshalling only. |
 | `CalWorkspaceService` | service | Orchestrates; owns the governor-limit policy. |
 | `CalEventQuery` | service | One calendar → generic events. Builds + runs the dynamic SOQL. |
 | `CalSchemaGuard` | utility | Validates object / field API names and read access; value formatting. |
 | `CalJsonConfig` | utility | Parses the JSON config fields (shared with the trigger). |
+| `CalFilterCompiler` | utility | `Filter_Criteria__c` placeholder expansion + trial-compile. Shared by the trigger, `CalEventQuery`, and `CalFilterController`. |
 | `CalCalendarSelector` / `CalUserPreferencesSelector` | selector | All SOQL for the harness objects. |
 | `CalCalendarTriggerHandler` | domain | `Cal_Calendar__c` save-time validation. |
 | `CalUserPreferencesDomain` | domain | Upsert the running user's one preference row. |
@@ -187,6 +198,7 @@ back to a visited range does not re-enter Apex.
 | `c-cal-field-mapping` | Record-page helper for `Cal_Calendar__c`. Read-only summary of `Field_Mappings__c`; a pencil opens the guided per-slot field picker. Not part of the runtime data path. |
 | `c-cal-field-config` | Record-page helper for `Cal_Calendar__c`. Read-only summary of `Field_Config__c` (the ordered extra fields shown on events); a pencil opens the guided add/remove/reorder editor. Not part of the runtime data path. |
 | `c-cal-color-rules` | Record-page helper for `Cal_Calendar__c`. Read-only summary of `Color_Rules__c` (the calendar-wide color rules + fallback color); a pencil opens the guided add/remove/reorder editor. Colors are picked from a named palette via `c-cal-color-picker`. Not part of the runtime data path. |
+| `c-cal-filter-criteria` | Record-page helper for `Cal_Calendar__c`. Read-only view of `Filter_Criteria__c`; a pencil opens a textarea with the placeholder reference, the Target Object's field list, and a server-side **Check syntax** button (`CalFilterController`). Not part of the runtime data path. |
 | `c-cal-color-picker` | Presentational. A labelled swatch that opens a panel of named colors (plus a native picker), so a color is chosen by sight rather than by hex. Controlled — `value` in, `change` ({ value }) out. |
 | `c/calWorkspaceCore` | Pure module: `mergeColorRules`, `mergeFieldConfig`, `resolveDisplayConfig`, `toGenericEvents`. |
 

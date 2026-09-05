@@ -124,4 +124,12 @@ public class CalDto {
         @AuraEnabled
         public List<Id> queriedCalendarIds;
     }
+
+    public class FilterCheck {
+        @AuraEnabled
+        public Boolean valid;
+        /** The reason the fragment is unusable; null when valid. */
+        @AuraEnabled
+        public String message;
+    }
 }

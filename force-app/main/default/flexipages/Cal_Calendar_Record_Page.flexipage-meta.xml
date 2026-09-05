@@ -29,20 +29,10 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>required</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Visibility__c</fieldItem>
-                <identifier>RecordVisibility_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Active__c</fieldItem>
-                <identifier>RecordActive_cField</identifier>
+                <fieldItem>Record.Description__c</fieldItem>
+                <identifier>RecordDescription_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-88c76f95-4cae-497e-9799-e68d77ed113c</name>
@@ -55,28 +45,28 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
+                <fieldItem>Record.Active__c</fieldItem>
+                <identifier>RecordActive_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>required</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Visibility__c</fieldItem>
+                <identifier>RecordVisibility_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
                 <fieldItem>Record.Row_Limit__c</fieldItem>
                 <identifier>RecordRow_Limit_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Description__c</fieldItem>
-                <identifier>RecordDescription_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Filter_Criteria__c</fieldItem>
-                <identifier>RecordFilter_Criteria_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-72a4240d-3137-4f33-925b-e7a6ba1ebc8e</name>
@@ -241,6 +231,16 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>calFilterCriteria</componentName>
+                <identifier>calFilterCriteriaComponent</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-calfiltercriteria</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
                 <componentInstanceProperties>
                     <name>body</name>
                     <value>Facet-eac2da51-6e0b-456b-83fb-23351346721e</value>
@@ -293,6 +293,20 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab4</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-calfiltercriteria</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Filter Criteria</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab5</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-e34f37ae-1db5-4c3c-97b9-311a021a4afe</name>

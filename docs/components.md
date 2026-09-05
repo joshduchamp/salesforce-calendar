@@ -126,6 +126,7 @@ the object model and Apex. Its LWCs:
 | `calFieldMapping` | Admin helper on the `Cal_Calendar__c` record page: a read-only summary of `Field_Mappings__c`, with a pencil that opens a guided per-slot field picker. Not on the runtime data path. |
 | `calFieldConfig` | Admin helper on the `Cal_Calendar__c` record page: a read-only summary of the extra event fields in `Field_Config__c`, with a pencil that opens an ordered add/remove/reorder editor. Not on the runtime data path. |
 | `calColorRules` | Admin helper on the `Cal_Calendar__c` record page: a read-only summary of `Color_Rules__c` (the calendar-wide color rules + fallback color), with a pencil that opens an add/remove/reorder editor. Colors are picked by sight via `calColorPicker`. Not on the runtime data path. |
+| `calFilterCriteria` | Admin helper on the `Cal_Calendar__c` record page: a read-only view of `Filter_Criteria__c` (the SOQL `WHERE` fragment), with a pencil that opens a textarea, the `$CURRENT_USER_ID` / `$RANGE_START` / `$RANGE_END` placeholder reference, a searchable Target Object field list, and a server-side syntax check. Not on the runtime data path. |
 | `calColorPicker` | Presentational swatch picker: a labelled color chip that opens a panel of named colors plus a native picker. `value` in, `change` ({ value }) out. Used by `calColorRules`. |
 | `calWorkspaceCore` | Pure module: `mergeColorRules`, `mergeFieldConfig`, `resolveDisplayConfig`, `toGenericEvents`. |
 

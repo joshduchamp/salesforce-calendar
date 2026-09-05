@@ -75,7 +75,7 @@ public with sharing class CalEventQuery {
             coverEndField +
             ' >= :rangeStart';
 
-        String filter = expandFilter(def.Filter_Criteria__c);
+        String filter = CalFilterCompiler.expand(def.Filter_Criteria__c);
         if (String.isNotBlank(filter)) {
             soql += ' AND (' + filter + ')';
         }
@@ -127,17 +127,6 @@ public with sharing class CalEventQuery {
             );
         }
         return path.trim();
-    }
-
-    /** Replace the documented placeholders with bind references — never values. */
-    private String expandFilter(String raw) {
-        if (String.isBlank(raw)) {
-            return null;
-        }
-        return raw.trim()
-            .replace('$CURRENT_USER_ID', ':currentUserId')
-            .replace('$RANGE_START', ':rangeStart')
-            .replace('$RANGE_END', ':rangeEnd');
     }
 
     private static Object getPath(SObject row, String path) {

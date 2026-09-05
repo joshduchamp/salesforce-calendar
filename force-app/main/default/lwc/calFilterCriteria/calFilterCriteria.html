@@ -1,0 +1,143 @@
+<template>
+    <lightning-card title="Filter Criteria" icon-name="utility:filterList">
+        <template if:true={hasTargetObject}>
+            <template if:false={isEdit}>
+                <lightning-button-icon
+                    slot="actions"
+                    class="edit-toggle"
+                    icon-name="utility:edit"
+                    alternative-text="Edit filter criteria"
+                    onclick={handleEdit}
+                ></lightning-button-icon>
+            </template>
+        </template>
+
+        <div class="body">
+            <template if:true={recordError}>
+                <p class="error">{recordError}</p>
+            </template>
+
+            <template if:false={hasTargetObject}>
+                <p class="hint">
+                    Set a <strong>Target Object</strong> on this calendar first — the filter is a
+                    SOQL <code>WHERE</code> fragment against that object.
+                </p>
+            </template>
+
+            <template if:true={hasTargetObject}>
+                <!-- Read view: the stored fragment -->
+                <template if:false={isEdit}>
+                    <template if:true={hasFilter}>
+                        <pre class="fragment">{storedFilter}</pre>
+                    </template>
+                    <template if:false={hasFilter}>
+                        <p class="empty">{emptySummary}</p>
+                    </template>
+                </template>
+
+                <!-- Edit view -->
+                <template if:true={isEdit}>
+                    <lightning-textarea
+                        class="editor"
+                        name="filter"
+                        label={editorLabel}
+                        value={draft}
+                        max-length={maxLength}
+                        placeholder="e.g. OwnerId = $CURRENT_USER_ID AND ShowAs = 'Busy'"
+                        field-level-help="A SOQL WHERE fragment — no leading WHERE, no semicolons or comments. Combine conditions with AND / OR."
+                        onchange={handleDraftChange}
+                    ></lightning-textarea>
+
+                    <div class="actions-row">
+                        <lightning-button
+                            class="check"
+                            label="Check syntax"
+                            icon-name="utility:check"
+                            onclick={handleCheck}
+                            disabled={checking}
+                        ></lightning-button>
+                        <template if:true={checkResult}>
+                            <span class={checkClass}>{checkText}</span>
+                        </template>
+                    </div>
+
+                    <div class="ref">
+                        <h3 class="ref-title">Special values</h3>
+                        <p class="hint">
+                            Each expands to a bind variable at query time. Click one to add it.
+                        </p>
+                        <ul class="tokens">
+                            <template for:each={placeholders} for:item="p">
+                                <li key={p.token} class="token">
+                                    <button
+                                        type="button"
+                                        class="token-btn"
+                                        data-token={p.token}
+                                        onclick={handleInsertToken}
+                                    >
+                                        {p.token}
+                                    </button>
+                                    <span class="token-meaning">{p.meaning}</span>
+                                </li>
+                            </template>
+                        </ul>
+                        <p class="example-line">Example: <code>{example}</code></p>
+                    </div>
+
+                    <div class="ref">
+                        <h3 class="ref-title">Fields on {targetObject}</h3>
+                        <template if:true={objectInfoError}>
+                            <p class="error">{objectInfoError}</p>
+                        </template>
+                        <template if:false={objectInfoError}>
+                            <lightning-input
+                                class="field-search"
+                                type="search"
+                                variant="label-hidden"
+                                label="Filter fields"
+                                placeholder="Filter fields"
+                                value={fieldFilter}
+                                onchange={handleFieldFilter}
+                            ></lightning-input>
+                            <ul class="fields">
+                                <template for:each={fieldRows} for:item="f">
+                                    <li key={f.apiName}>
+                                        <button
+                                            type="button"
+                                            class="field-btn"
+                                            data-token={f.apiName}
+                                            onclick={handleInsertToken}
+                                        >
+                                            {f.apiName}
+                                        </button>
+                                        <span class="field-label">{f.label}</span>
+                                    </li>
+                                </template>
+                            </ul>
+                            <template if:true={noFieldMatches}>
+                                <p class="empty">No fields match that search.</p>
+                            </template>
+                        </template>
+                    </div>
+                </template>
+            </template>
+        </div>
+
+        <template if:true={isEdit}>
+            <div slot="footer" class="footer">
+                <lightning-button
+                    class="cancel"
+                    label="Cancel"
+                    onclick={handleCancel}
+                ></lightning-button>
+                <lightning-button
+                    class="save"
+                    label="Save"
+                    variant="brand"
+                    disabled={saveDisabled}
+                    onclick={handleSave}
+                ></lightning-button>
+            </div>
+        </template>
+    </lightning-card>
+</template>

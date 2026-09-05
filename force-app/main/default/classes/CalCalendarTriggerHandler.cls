@@ -122,31 +122,9 @@ public with sharing class CalCalendarTriggerHandler {
     }
 
     private void validateFilter(Cal_Calendar__c record, SObjectType token) {
-        String raw = record.Filter_Criteria__c;
-        if (String.isBlank(raw)) {
-            return;
-        }
-        if (raw.contains(';') || raw.contains('//') || raw.contains('/*')) {
-            record.addError('Filter Criteria: ";" and comments are not allowed.');
-            return;
-        }
-        String expanded = raw.trim()
-            .replace('$CURRENT_USER_ID', ':currentUserId')
-            .replace('$RANGE_START', ':rangeStart')
-            .replace('$RANGE_END', ':rangeEnd');
-        Id currentUserId = UserInfo.getUserId();
-        Datetime rangeStart = Datetime.now();
-        Datetime rangeEnd = Datetime.now();
-        Map<String, Object> binds = new Map<String, Object>{
-            'currentUserId' => currentUserId,
-            'rangeStart' => rangeStart,
-            'rangeEnd' => rangeEnd
-        };
-        String probe = 'SELECT Id FROM ' + token.getDescribe().getName() + ' WHERE (' + expanded + ') LIMIT 0';
-        try {
-            Database.queryWithBinds(probe, binds, AccessLevel.SYSTEM_MODE);
-        } catch (Exception e) {
-            record.addError('Filter Criteria does not compile: ' + e.getMessage());
+        String reason = CalFilterCompiler.problem(token, record.Filter_Criteria__c);
+        if (reason != null) {
+            record.addError('Filter Criteria ' + reason);
         }
     }
 
