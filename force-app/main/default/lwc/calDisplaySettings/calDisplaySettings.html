@@ -1,0 +1,93 @@
+<template>
+    <div class="settings">
+        <p class="settings__heading slds-text-title_caps">Display</p>
+
+        <lightning-combobox
+            class="settings__row"
+            data-prop="firstDayOfWeek"
+            label="First day of week"
+            value={firstDayValue}
+            options={firstDayOptions}
+            onchange={handleFirstDay}
+        ></lightning-combobox>
+
+        <lightning-input
+            class="settings__row"
+            data-prop="hideWeekends"
+            type="toggle"
+            label="Hide weekends"
+            checked={hideWeekends}
+            message-toggle-active=""
+            message-toggle-inactive=""
+            onchange={handleHideWeekends}
+        ></lightning-input>
+
+        <lightning-input
+            class="settings__row"
+            data-prop="maxEventsPerDay"
+            type="number"
+            label="Max events per day"
+            min="1"
+            max="99"
+            value={maxEventsPerDay}
+            onchange={handleMaxEvents}
+            field-level-help="Cap on the number of event chips shown in a month-view day cell before a “+N more” link."
+        ></lightning-input>
+
+        <div class="settings__hours">
+            <lightning-input
+                class="settings__row"
+                data-prop="schedulerStartHour"
+                type="number"
+                label="Scheduler start hour"
+                min="0"
+                max="24"
+                value={schedulerStartHour}
+                onchange={handleStartHour}
+            ></lightning-input>
+            <lightning-input
+                class="settings__row"
+                data-prop="schedulerEndHour"
+                type="number"
+                label="Scheduler end hour"
+                min="0"
+                max="24"
+                value={schedulerEndHour}
+                onchange={handleEndHour}
+            ></lightning-input>
+        </div>
+
+        <lightning-input
+            class="settings__row"
+            data-prop="hideLegend"
+            type="toggle"
+            label="Hide legend"
+            checked={hideLegend}
+            message-toggle-active=""
+            message-toggle-inactive=""
+            onchange={handleHideLegend}
+        ></lightning-input>
+
+        <lightning-input
+            class="settings__row"
+            data-prop="showLegendCounts"
+            type="toggle"
+            label="Show legend counts"
+            checked={showLegendCounts}
+            message-toggle-active=""
+            message-toggle-inactive=""
+            onchange={handleShowCounts}
+        ></lightning-input>
+
+        <lightning-input
+            class="settings__row"
+            data-prop="locale"
+            label="Locale"
+            maxlength="10"
+            value={locale}
+            placeholder="Browser default"
+            onchange={handleLocale}
+            field-level-help="BCP-47 language tag (e.g. en-GB, fr-FR). Blank uses the browser locale."
+        ></lightning-input>
+    </div>
+</template>
