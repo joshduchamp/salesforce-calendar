@@ -149,8 +149,10 @@ can never reach the runtime query.
 
 One row per user (OWD Private, owned by that user). Holds the selected calendar
 ids, the primary calendar, and every display-chrome setting. `c-cal-workspace`
-upserts it, debounced ~1s, on view / layout / selection / primary change. The
-focused date is not persisted — the workspace always opens on today.
+upserts it, debounced ~1s, on view / layout / selection / primary change and on
+any change from the settings-drawer form (first day of week, weekend visibility,
+scheduler hour window, month-cell event cap, legend toggles, locale). The focused
+date is not persisted — the workspace always opens on today.
 
 ## Apex
 
@@ -192,8 +194,9 @@ back to a visited range does not re-enter Apex.
 
 | Component | Responsibility |
 | --- | --- |
-| `c-cal-workspace` | The only data-aware calendar component. Wires `getWorkspace`, refetches on `rangechange` (debounced, out-of-order-safe), merges N calendars into one `c-cal-calendar` prop set, persists preferences. Targets App / Home pages. A settings control in the calendar's `toolbar-end` slot (or in the empty state) opens a `c-cal-drawer` holding the picker. |
+| `c-cal-workspace` | The only data-aware calendar component. Wires `getWorkspace`, refetches on `rangechange` (debounced, out-of-order-safe), merges N calendars into one `c-cal-calendar` prop set, persists preferences. Targets App / Home pages. A settings control in the calendar's `toolbar-end` slot (or in the empty state) opens a `c-cal-drawer` holding the calendar picker and the display-settings form. |
 | `c-cal-calendar-picker` | Presentational. Grouped "My / Shared" checkbox list to choose which calendars to display; emits `calendarselectionchange` / `primarychange`. Distinct from the in-calendar `calSourceList`, which only show/hides already-loaded calendars. Lives inside the workspace drawer, so calendar-subscription choice stays off the main layout — the in-calendar sidebar keeps only the per-view visibility toggles + legend. |
+| `c-cal-display-settings` | Presentational. The display-chrome form in the workspace drawer: first day of week, hide weekends, scheduler start/end hour, max events per day, hide legend, show legend counts, locale — the per-user preferences the in-calendar toolbar does not already own (view / layout). Controlled: each value in via `@api`, one `settingschange` (`{ <key>: <value> }`) out per change; the workspace merges it into the display config and autosaves. |
 | `c-cal-drawer` | Generic presentational slide-out panel — see [components.md](components.md). Not harness-specific; the workspace just composes it. |
 | `c-cal-field-mapping` | Record-page helper for `Cal_Calendar__c`. Read-only summary of `Field_Mappings__c`; a pencil opens the guided per-slot field picker. Not part of the runtime data path. |
 | `c-cal-field-config` | Record-page helper for `Cal_Calendar__c`. Read-only summary of `Field_Config__c` (the ordered extra fields shown on events); a pencil opens the guided add/remove/reorder editor. Not part of the runtime data path. |

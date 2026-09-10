@@ -267,6 +267,13 @@ export default class CalWorkspace extends LightningElement {
         this.scheduleSave();
     }
 
+    // Display-chrome settings from the drawer form; detail carries the one
+    // changed field. Apex clamps the ranges and drops an inverted hour window.
+    handleDisplaySettingsChange(event) {
+        this._display = { ...this._display, ...event.detail };
+        this.scheduleSave();
+    }
+
     handleVisibilityChange(event) {
         const { calendarId, visible } = event.detail;
         this._visibility = { ...this._visibility, [calendarId]: visible };

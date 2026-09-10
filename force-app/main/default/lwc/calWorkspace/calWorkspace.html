@@ -1,6 +1,6 @@
 <template>
     <div class="workspace">
-        <c-cal-drawer label="My calendars" open={settingsOpen} onclose={closeSettings}>
+        <c-cal-drawer label="Calendar settings" open={settingsOpen} onclose={closeSettings}>
             <c-cal-calendar-picker
                 calendars={availableCalendars}
                 selected-ids={selectedIds}
@@ -8,6 +8,18 @@
                 oncalendarselectionchange={handleSelectionChange}
                 onprimarychange={handlePrimaryChange}
             ></c-cal-calendar-picker>
+            <c-cal-display-settings
+                class="workspace__display-settings"
+                first-day-of-week={firstDayOfWeek}
+                hide-weekends={hideWeekends}
+                scheduler-start-hour={schedulerStartHour}
+                scheduler-end-hour={schedulerEndHour}
+                max-events-per-day={maxEventsPerDay}
+                hide-legend={hideLegend}
+                show-legend-counts={showLegendCounts}
+                locale={locale}
+                onsettingschange={handleDisplaySettingsChange}
+            ></c-cal-display-settings>
         </c-cal-drawer>
 
         <div class="workspace__main">

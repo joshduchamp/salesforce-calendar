@@ -1,0 +1,22 @@
+:host {
+    display: block;
+}
+
+.settings__heading {
+    margin-bottom: 0.5rem;
+    color: #706e6b;
+}
+
+.settings__row {
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.settings__hours {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.settings__hours .settings__row {
+    flex: 1 1 0;
+}

@@ -151,6 +151,42 @@ describe('c-cal-workspace', () => {
         expect(sent.layout).toBe('condensed');
     });
 
+    it('autosaves a display-settings change from the drawer', async () => {
+        const element = await load();
+        await openSettings(element);
+        const settings = element.shadowRoot.querySelector('c-cal-display-settings');
+        settings.dispatchEvent(
+            new CustomEvent('settingschange', { detail: { hideWeekends: true } })
+        );
+        settings.dispatchEvent(
+            new CustomEvent('settingschange', { detail: { maxEventsPerDay: 6 } })
+        );
+
+        jest.advanceTimersByTime(1000);
+        await flush();
+
+        expect(savePreferences).toHaveBeenCalledTimes(1);
+        const sent = JSON.parse(savePreferences.mock.calls[0][0].prefsJson);
+        expect(sent.hideWeekends).toBe(true);
+        expect(sent.maxEventsPerDay).toBe(6);
+    });
+
+    it('passes the saved display config into the drawer form', async () => {
+        const element = await load({
+            ...WORKSPACE,
+            preferences: {
+                selectedCalendarIds: ['a'],
+                primaryCalendarId: 'a',
+                displayConfig: { firstDayOfWeek: 1, hideWeekends: true, locale: 'en-GB' }
+            }
+        });
+        await openSettings(element);
+        const settings = element.shadowRoot.querySelector('c-cal-display-settings');
+        expect(settings.firstDayOfWeek).toBe(1);
+        expect(settings.hideWeekends).toBe(true);
+        expect(settings.locale).toBe('en-GB');
+    });
+
     it('autosaves a selection change, and flushes a pending save on teardown', async () => {
         const element = await load({
             ...WORKSPACE,
